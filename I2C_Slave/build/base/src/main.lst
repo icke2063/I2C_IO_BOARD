@@ -1,0 +1,89 @@
+   1               		.file	"main.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  10               		.text
+  11               	.Ltext0:
+  70               	.global	main
+  72               	main:
+  73               		.stabd	46,0,0
+   1:build/base/src/main.c **** /*----------------------------------------------------------------------------
+   2:build/base/src/main.c ****  Copyright:      icke2063  mailto: icke2063@gmail.com
+   3:build/base/src/main.c ****  Author:         icke2063
+   4:build/base/src/main.c ****  Remarks:        
+   5:build/base/src/main.c ****  known Problems: none
+   6:build/base/src/main.c ****  Version:        01.10.2012
+   7:build/base/src/main.c ****  Description:    I2C(TWI) IO Board
+   8:build/base/src/main.c **** 
+   9:build/base/src/main.c ****  Dieses Programm ist freie Software. Sie k�nnen es unter den Bedingungen der 
+  10:build/base/src/main.c ****  GNU General Public License, wie von der Free Software Foundation ver�ffentlicht, 
+  11:build/base/src/main.c ****  weitergeben und/oder modifizieren, entweder gem�� Version 2 der Lizenz oder 
+  12:build/base/src/main.c ****  (nach Ihrer Option) jeder sp�teren Version. 
+  13:build/base/src/main.c **** 
+  14:build/base/src/main.c ****  Die Ver�ffentlichung dieses Programms erfolgt in der Hoffnung, 
+  15:build/base/src/main.c ****  da� es Ihnen von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, 
+  16:build/base/src/main.c ****  sogar ohne die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT 
+  17:build/base/src/main.c ****  F�R EINEN BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License. 
+  18:build/base/src/main.c **** 
+  19:build/base/src/main.c ****  Sie sollten eine Kopie der GNU General Public License zusammen mit diesem 
+  20:build/base/src/main.c ****  Programm erhalten haben. 
+  21:build/base/src/main.c ****  Falls nicht, schreiben Sie an die Free Software Foundation, 
+  22:build/base/src/main.c ****  Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA. 
+  23:build/base/src/main.c **** ----------------------------------------------------------------------------*/
+  24:build/base/src/main.c **** 
+  25:build/base/src/main.c **** #include <avr/io.h>
+  26:build/base/src/main.c **** #include <config.h>
+  27:build/base/src/main.c **** 
+  28:build/base/src/main.c **** unsigned char hh;
+  29:build/base/src/main.c **** unsigned char mm;
+  30:build/base/src/main.c **** unsigned char ss;
+  31:build/base/src/main.c **** 
+  32:build/base/src/main.c **** 
+  33:build/base/src/main.c **** //----------------------------------------------------------------------------
+  34:build/base/src/main.c **** // Hier startet das Hauptprogramm
+  35:build/base/src/main.c **** // ******************************
+  36:build/base/src/main.c **** 
+  37:build/base/src/main.c **** int main(void)
+  38:build/base/src/main.c **** {
+  75               	.LM0:
+  76               	.LFBB1:
+  77               	/* prologue: function */
+  78               	/* frame size = 0 */
+  39:build/base/src/main.c **** 
+  40:build/base/src/main.c **** 	DDRD = OUTD;
+  80               	.LM1:
+  81 0000 80E6      		ldi r24,lo8(96)
+  82 0002 81BB      		out 49-32,r24
+  83               	.L2:
+  41:build/base/src/main.c **** //	PORTD = ~OUTD;
+  42:build/base/src/main.c **** 
+  43:build/base/src/main.c **** 	while(1){
+  44:build/base/src/main.c **** 		PORTD=0x60;
+  85               	.LM2:
+  86 0004 82BB      		out 50-32,r24
+  87 0006 00C0      		rjmp .L2
+  89               	.Lscope1:
+  91               		.stabd	78,0,0
+  92               		.comm hh,1,1
+  93               		.comm mm,1,1
+  94               		.comm ss,1,1
+  99               	.Letext0:
+ 100               	.global __do_clear_bss
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+     /tmp/ccFdeylq.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccFdeylq.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccFdeylq.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccFdeylq.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccFdeylq.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccFdeylq.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccFdeylq.s:72     .text:00000000 main
+                            *COM*:00000001 hh
+                            *COM*:00000001 mm
+                            *COM*:00000001 ss
+
+UNDEFINED SYMBOLS
+__do_clear_bss
