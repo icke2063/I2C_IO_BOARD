@@ -78,12 +78,17 @@ TARGET = Hexfiles/I2C_IO_Board_$(HEX_FILE_NAME)
 
 # Optimization level, can be [0, 1, 2, 3, s]. 0 turns off optimization.
 # (Note: 3 is not always the best optimization level. See avr-libc FAQ.)
-OPT = s 
+OPT = s
 
 # If there is more than one source file, append them above, or modify and
 # uncomment the following:
 # Base
-LOCAL_SRC = 	base/src/main.c
+LOCAL_SRC = 	base/src/slave_main.c
+
+# extra
+#TWI
+LOCAL_SRC += 	extra/TWI/src/twislave.c
+
 
 SRC = $(addprefix $(BUILD_DIR)/,$(LOCAL_SRC))
 
@@ -100,7 +105,7 @@ ASRC =
 
 # List any extra directories to look for include files here.
 #     Each directory must be seperated by a space.
-EXTRAINCDIRS =	base/config/ base/inc/
+EXTRAINCDIRS =	base/config/ base/inc/ extra/TWI/inc/
 
 
 # Optional compiler flags.
@@ -178,7 +183,7 @@ AVRDUDE_WRITE_FLASH = -U flash:w:$(TARGET).hex $(FUSE_BITS)
 #AVRDUDE_WRITE_EEPROM = -U eeprom:w:$(TARGET).eep
 
 #AVRDUDE_FLAGS = -p $(MCU) -P $(AVRDUDE_PORT) -b 115200 -c $(AVRDUDE_PROGRAMMER)
-AVRDUDE_FLAGS = -p $(MCU) -P $(AVRDUDE_PORT) -c $(AVRDUDE_PROGRAMMER)
+AVRDUDE_FLAGS = -b4 -p $(MCU) -P $(AVRDUDE_PORT) -c $(AVRDUDE_PROGRAMMER)
 
 # Uncomment the following if you want avrdude's erase cycle counter.
 # Note that this counter needs to be initialized first using -Yn,
@@ -327,8 +332,9 @@ program: $(TARGET).hex $(TARGET).eep
 
 # Copy src files into build directory
 copysrc: $(BUILD_DIR)
-	cp -r base -t $(BUILD_DIR)/
-
+	@cp -r base -t $(BUILD_DIR)/
+	@cp -r extra -t $(BUILD_DIR)/
+	
 # Create final output files (.hex, .eep) from ELF output file.
 %.hex: %.elf
 	@echo

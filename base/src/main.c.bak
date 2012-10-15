@@ -22,9 +22,21 @@
  Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA. 
  ----------------------------------------------------------------------------*/
 
+//extern
+#include <avr/io.h>
+#include <util/delay.h>
+#include <avr/eeprom.h>
+
+
+//intern
 #include <config.h>
 #include <eeprom_mapping.h>
 #include <main.h>
+
+
+//extra
+#include "twislave.h"
+
 
 unsigned char hh;
 unsigned char mm;
@@ -40,36 +52,34 @@ unsigned char DDR_PORTD = 0;
 
 int main(void) {
 
-	unsigned char func = 0;
 
-	DDRD = OUTD;
-	//	PORTD = ~OUTD;
-
-
-	unsigned char tmp;
-
-	//	tmp = eeprom_read_byte(0);
-
+	//TWI als Slave mit Adresse slaveadr starten
+	init_twi_slave(SLAVE_ADRESSE);
 	eeprom_write_byte(EEPROM_FUNC_PD_5,PIN_PULSE);
 
 	while (1) {
+		//PORTB
+		if(i2cdata[1] != 0x00){
+			//handlePort(&DDRB, &PORTB, EEPROM_FUNC_PORTB, i2cdata[1], EEPROM_ENABLE_MASK_PORTB);
+			i2cdata[1] = 0x00;
+		}
 
-		handlePort(&DDRD, &PORTD, EEPROM_FUNC_PORTD, 0x60, EEPROM_MASK_PORTD);
-_delay_ms(1000);
-		//
-		//		//2.Wechsel
-		//		if(PIND & (1<<i))	//PIN == 1
-		//		{
-		//			HTTP_DEBUG("2.Eins->Null(%i)\r\n",i);
-		//			PORTD = PORTD &= ~(1<<i);
-		//		}
-		//		else				//PIN == 0
-		//		{
-		//			HTTP_DEBUG("2.Null->Eins(%i)\r\n",i);
-		//			PORTD = PORTD |= (1<<i) ;
-		//		}
-		//
+		//PORTC
+		if(i2cdata[2] != 0x00){
+			//handlePort(&DDRC, &PORTC, EEPROM_FUNC_PORTC, i2cdata[2], EEPROM_ENABLE_MASK_PORTC);
+			i2cdata[2] = 0x00;
+		}
 
+		//PORTD
+		if(i2cdata[3] != 0x00){
+			//handlePort(&DDRD, &PORTD, EEPROM_FUNC_PORTD, i2cdata[3], EEPROM_ENABLE_MASK_PORTD);
+			i2cdata[3] = 0x00;
+		}
+
+//		PORTD&= ~(1 << 5);
+
+
+		_delay_ms(1000);
 	}
 	return (0);
 }
