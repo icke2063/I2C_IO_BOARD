@@ -39,13 +39,13 @@
  * Byte 2		:	IO_PORT1	(rw)
  * Byte 3		:	
  *
- * Byte 8+9		:	ADC 0		(ro)
- * Byte A+B		:	ADC 1		(ro)
- * Byte C+D		:	ADC 2		(ro)
- * Byte E+F		:	ADC 3		(ro)
+ * Byte 8+9		:	IO0 data		(ro)
+ *	...
+ * Byte Y+Z		:	IOB data		(ro)
  *
  */
 #define VIRTUAL_IO_START	0x01
+#define VIRTUAL_DATA_START	0x10
 
 
 /**
@@ -64,6 +64,14 @@ struct I2C_Slave_IO_PIN{
 unsigned char	pin_type;
 unsigned char	pin_name[MAX_IO_PIN_NAME_LENGTH];
 };
+
+#define EEPROM_IO_END	EEPROM_IO_START+(MAX_IO_PINS * sizeof(struct I2C_Slave_IO_PIN))
+
+#define EEPROM_S0_0_STORE	EEPROM_IO_END
+#define EEPROM_S0_0_FACTOR	EEPROM_S0_0_STORE + sizeof(uint32_t)
+
+#define EEPROM_S0_1_STORE	EEPROM_S0_0_FACTOR + sizeof(uint8_t)
+#define EEPROM_S0_1_FACTOR	EEPROM_S0_1_STORE + sizeof(uint32_t)
 
 
 #endif /* EEPROM_MAPPING_H_ */

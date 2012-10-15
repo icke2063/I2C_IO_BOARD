@@ -89,6 +89,8 @@ LOCAL_SRC = 	base/src/slave_main.c
 #TWI
 LOCAL_SRC += 	extra/TWI/src/twislave.c
 
+#S0
+LOCAL_SRC += 	extra/S0/src/S0.c
 
 SRC = $(addprefix $(BUILD_DIR)/,$(LOCAL_SRC))
 
@@ -105,7 +107,9 @@ ASRC =
 
 # List any extra directories to look for include files here.
 #     Each directory must be seperated by a space.
-EXTRAINCDIRS =	base/config/ base/inc/ extra/TWI/inc/
+EXTRAINCDIRS =	base/config/ base/inc/ 	\
+				extra/TWI/inc/			\
+				extra/S0/inc/ extra/S0/config/
 
 
 # Optional compiler flags.

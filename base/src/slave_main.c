@@ -50,8 +50,8 @@
 #include <slave_main.h>
 #include <slave_config.h>
 #include <slave_eeprom_mapping.h>
-
-
+#include <S0_config.h>
+#include <S0.h>
 
 
 //###################### Macros (jtronics)
@@ -169,14 +169,17 @@ void handleIOpins(void) {
 	unsigned char *cur_DDR=0;
 	unsigned char *cur_PORT=0;
 
+	unsigned char S0_0 = 0;
+	unsigned char S0_1 = 0;
 
 	//loop over all virtual IO Pins
 	for (int pin = 0; pin < MAX_IO_PINS; pin++) {
 
 		IO_Port = VIRTUAL_IO_START +(pin/8);
 
+		eeprom_address = EEPROM_IO_START+(sizeof(struct I2C_Slave_IO_PIN)*pin);
+		eeprom_busy_wait ();
 		func = eeprom_read_byte(eeprom_address);	//read function code from eeprom
-		eeprom_address += sizeof(struct I2C_Slave_IO_PIN);
 
 		cur_PORT = io_pins[pin].PPORT;
 		cur_DDR	 = io_pins[pin].PDDR;
@@ -210,12 +213,55 @@ void handleIOpins(void) {
 			*cur_PORT &= ~(1 << io_pins[pin].pin); //set OFF
 
 			break;
+		case PIN_S0:
+			//INT0
+			if((cur_PORT == P_S0_0_PORT) && (cur_DDR == P_S0_0_DDR) && (io_pins[pin].pin == S0_0_PIN)){
+				//enable S0
+				*cur_DDR &= ~(1 << io_pins[pin].pin); //set DDR "0"
+				*cur_PORT |= (1 << io_pins[pin].pin); //enable pullup PORT "1"
+				S0_Start(0);
+				S0_0 = 1;
+				if(get_S0_data(0)%S0_interval == 0){
+					save_eeprom(0);
+				}
+				break;
+			}else{
+				//INT1
+				if((cur_PORT == P_S0_1_PORT) && (cur_DDR == P_S0_1_DDR) && (io_pins[pin].pin == S0_1_PIN)){
+
+					//enable S0
+					*cur_DDR &= ~(1 << io_pins[pin].pin); //set DDR "0"
+					*cur_PORT |= (1 << io_pins[pin].pin); //enable pullup PORT "1"
+					S0_Start(1);
+					S0_1 = 1;
+					if(get_S0_data(1)%S0_interval == 0){
+						save_eeprom(1);
+					}
+					break;
+				}else{
+					eeprom_busy_wait ();
+					eeprom_write_byte(eeprom_address,PIN_DISABLED);	//write function code to eeprom
+				}
+			}
+			break;
+
+
 		default:
 			*cur_DDR &= ~(1 << io_pins[pin].pin); //disable PIN
 			*cur_PORT &= ~(1 << io_pins[pin].pin); //disable PULLUP
 			break;
 			}
 	}
+
+	//S0 deaktivieren
+	if(!S0_0){
+		S0_Stop(0);
+	}
+
+	if(!S0_1){
+		S0_Stop(1);
+	}
+
 }
 
 void readIOpins(void){
@@ -225,6 +271,8 @@ void readIOpins(void){
 	unsigned char tmp_PIN = 0x00;
 
 	unsigned char *cur_PIN=0;
+	unsigned char *cur_PORT=0;
+	unsigned char *cur_DDR=0;
 
 	for (int pin = 0; pin < MAX_IO_PINS; pin++){
 
@@ -234,6 +282,9 @@ void readIOpins(void){
 		func = eeprom_read_byte(eeprom_address);	//read function code from eeprom
 
 		cur_PIN = io_pins[pin].PPIN;
+		cur_PORT = io_pins[pin].PPORT;
+		cur_DDR = io_pins[pin].PDDR;
+
 
 		switch (func) {
 			case PIN_DISABLED:
@@ -269,6 +320,15 @@ void readIOpins(void){
 					cbi(tmp_PIN,pin%8);
 				}
 				break;
+			case PIN_S0:
+				if((cur_PORT == P_S0_0_PORT) && (cur_DDR == P_S0_0_DDR) && (io_pins[pin].pin == S0_0_PIN)){
+					txbuffer[VIRTUAL_DATA_START+(pin*sizeof(uint32_t))] = get_S0_data(0);
+				}
+				if((cur_PORT == P_S0_1_PORT) && (cur_DDR == P_S0_1_DDR) && (io_pins[pin].pin == S0_1_PIN)){
+					txbuffer[VIRTUAL_DATA_START+(pin*sizeof(uint32_t))] = get_S0_data(1);
+				}
+				break;
+
 			default:
 				sbi(tmp_PIN,(pin%8));
 				break;

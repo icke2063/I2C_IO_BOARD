@@ -50,7 +50,7 @@
 
 //#################################### von Benutzer konfigurierbare Einstellung 
 
-#define buffer_size 20 								//Gr��e der Buffer in Byte (2..254)
+#define buffer_size 0x40							//Gr��e der Buffer in Byte (2..254)
 
 //#################################### Schutz vor unsinnigen Buffergr��en
 #if (buffer_size > 254)
