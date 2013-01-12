@@ -90,10 +90,10 @@
 #define P_PIN_IO_A	&PIND
 #define P_PIN_IO_B	&PIND
 
-#define PIN_IO_0	0
-#define PIN_IO_1	1
+#define PIN_IO_0	1
+#define PIN_IO_1	3
 #define PIN_IO_2	2
-#define PIN_IO_3	3
+#define PIN_IO_3	0
 #define PIN_IO_4	0
 #define PIN_IO_5	1
 

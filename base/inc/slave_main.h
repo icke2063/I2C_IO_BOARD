@@ -39,13 +39,6 @@ const unsigned char pin;
  */
 void init(void);
 
-/*
-void handlePort(volatile uint8_t *ptr_DDR, volatile uint8_t *ptr_PORT,
-		unsigned char eeprom_address, unsigned char tmp_PORT,
-		unsigned char enable_mask);
-*/
-
-
 /**
  * @brief handle all virtual IO pins
  * - loop over all virtual IO pins and read function from eeprom
@@ -56,8 +49,10 @@ void handleIOpins(void);
 
 /**
  * @brief map virtual IO pins -> txbuffer[1,2]
+ * - loop over all virtual IO pins and read function from eeprom
+ * - read pin or set pin data by function code
  */
 void readIOpins(void);
 
 
-#endif /* MAIN_H_ */
+#endif /* SLAVE_MAIN_H_ */

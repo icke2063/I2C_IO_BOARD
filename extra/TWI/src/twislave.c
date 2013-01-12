@@ -156,7 +156,7 @@ ISR (TWI_vect)
 						TWCR_ACK;		//Ack senden
 						break;
 				}
-
+				//no break -> if no above condition succeeds the default handling is used
 
 			default://reset address
 				slave_status = ST_ADDR_INVALID;

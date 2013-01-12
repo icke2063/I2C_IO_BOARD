@@ -39,9 +39,9 @@
  * Byte 2		:	IO_PORT1	(rw)
  * Byte 3		:	
  *
- * Byte 8+9		:	IO0 data		(ro)
+ * Byte [16;17]		:	IO0 data		(ro)
  *	...
- * Byte Y+Z		:	IOB data		(ro)
+ * Byte [38;39]		:	IOB data		(ro)
  *
  */
 #define VIRTUAL_IO_START	0x01

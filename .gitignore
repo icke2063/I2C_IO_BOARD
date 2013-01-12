@@ -1,2 +1,2 @@
-I2C_Slave/Hexfiles/
-I2C_Slave/build/
+/Hexfiles/*
+/build/*
