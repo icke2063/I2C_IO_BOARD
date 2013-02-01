@@ -84,6 +84,8 @@ OPT = s
 # uncomment the following:
 # Base
 LOCAL_SRC = 	base/src/slave_main.c
+#common_AVR
+LOCAL_SRC += 	common_AVR/src/IO_handling.c
 
 # extra
 #TWI
@@ -107,8 +109,9 @@ ASRC =
 
 # List any extra directories to look for include files here.
 #     Each directory must be seperated by a space.
-EXTRAINCDIRS =	base/config/ base/inc/ 	\
-				extra/TWI/inc/			\
+EXTRAINCDIRS =	base/config/ base/inc/ 			\
+				common_AVR/include/				\
+				extra/TWI/inc/					\
 				extra/S0/inc/ extra/S0/config/
 
 
@@ -338,6 +341,9 @@ program: $(TARGET).hex $(TARGET).eep
 copysrc: $(BUILD_DIR)
 	@cp -r base -t $(BUILD_DIR)/
 	@cp -r extra -t $(BUILD_DIR)/
+	@mkdir -p $(BUILD_DIR)/common_AVR/
+	@cp -r common_AVR/include -t $(BUILD_DIR)/common_AVR/
+	@cp -r common_AVR/src -t $(BUILD_DIR)/common_AVR/
 	
 # Create final output files (.hex, .eep) from ELF output file.
 %.hex: %.elf
