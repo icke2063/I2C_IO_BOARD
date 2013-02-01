@@ -51,7 +51,7 @@
 //#################################### von Benutzer konfigurierbare Einstellung 
 
 #define buffer_size 0x40							//Gr��e der Buffer in Byte (2..254)
-
+#define USE16BITADDRESS
 //#################################### Schutz vor unsinnigen Buffergr��en
 #if (buffer_size > 254)
 	#error Buffer zu gro� gew�hlt! Maximal 254 Bytes erlaubt.
@@ -65,8 +65,11 @@
 
 volatile uint8_t rxbuffer[buffer_size];				//Der Empfangsbuffer, der vom Slave ausgelesen werden kann.
 volatile uint8_t txbuffer[buffer_size];				//Der Sendebuffe, der vom Master ausgelesen werden kann.
-volatile uint8_t buffer_adr; 						//"Adressregister" f�r den Buffer
-
+#ifdef USE16BITADDRESS
+	volatile uint16_t buffer_adr; 						//"Adressregister" f�r den Buffer
+#else
+	volatile uint8_t buffer_adr; 						//"Adressregister" f�r den Buffer
+#endif
 volatile uint16_t slave_status; 					//Status für den Slave
 //########################################################################################## init_twi_slave 
 void init_twi_slave(uint8_t adr);

@@ -63,8 +63,10 @@ void init_twi_slave(uint8_t adr)
 {
 	TWAR= (adr<<1); //Adresse setzen
 	TWCR &= ~(1<<TWSTA)|(1<<TWSTO);
-	TWCR|= (1<<TWEA) | (1<<TWEN)|(1<<TWIE); 	
-	buffer_adr=0xFF;  
+	TWCR|= (1<<TWEA) | (1<<TWEN)|(1<<TWIE);
+
+	buffer_adr=0;
+
 	slave_status = ST_ADDR_INVALID;	//Status setzen
 	sei();
 }
@@ -79,7 +81,7 @@ ISR (TWI_vect)
 		{
 		case TW_SR_SLA_ACK: 						// 0x60 Slave Receiver, wurde adressiert	
 			TWCR_ACK; 								// n�chstes Datenbyte empfangen, ACK danach
-			buffer_adr=0xFF; 						// Bufferposition ist undefiniert
+			buffer_adr=0; 						// Bufferposition ist undefiniert
 			slave_status = ST_ADDR_INVALID;
 			break;
 
@@ -118,7 +120,7 @@ ISR (TWI_vect)
 			case ST_WAITFORHIGH://zweiter Zugriff, HighByte Buffer setzten
 				buffer_adr |= (data<<8); 				//low Byte Bufferposition setzen
 				//Kontrolle ob gewünschte Adresse im erlaubten bereich
-				if(buffer_adr>=(I2C_BUFFER_SIZE+EEPROM_SIZE))
+				if(buffer_adr >= (buffer_size+EEPROM_SIZE))
 					{
 						buffer_adr=0; //Adresse auf Null setzen. Ist das sinnvoll? TO DO!
 						slave_status = ST_ADDR_INVALID;
@@ -132,12 +134,6 @@ ISR (TWI_vect)
 				break;
 		#endif
 			case ST_ADDR_VALID:
-
-				if(buffer_adr == 0){
-					buffer_adr++; //Buffer-Adresse weiterzählen für nächsten Schreibzugriff
-					TWCR_ACK;		//Ack senden
-					break;
-				}
 
 				//write buffer data
 				if(buffer_adr<buffer_size)
@@ -159,7 +155,8 @@ ISR (TWI_vect)
 				//no break -> if no above condition succeeds the default handling is used
 
 			default://reset address
-				slave_status = ST_ADDR_INVALID;
+				slave_status	=	ST_ADDR_INVALID;
+				buffer_adr		=	0;
 				TWCR_NACK;		//Nack senden
 				break;
 			}
@@ -182,7 +179,7 @@ ISR (TWI_vect)
 					TWDR = txbuffer[buffer_adr]; //Daten lesen
 			}
 
-			//write eeprom
+			//read eeprom
 			if(buffer_adr>buffer_size && buffer_adr<buffer_size+EEPROM_SIZE-1)
 			{
 					TWDR = eeprom_read_byte(buffer_adr-buffer_size); //Daten aus eeprom lesen
