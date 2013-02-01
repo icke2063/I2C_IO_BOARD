@@ -1,0 +1,19 @@
+/*******************************************************************//**
+*      @file   git-version.h
+*
+*      Build system can set version strings here.
+*
+*      @author	icke2063 <icke2063@gmail.com>
+*      @date	Created: 2013-02-01
+*
+**********************************************************************/
+
+#ifndef _GIT_VERSION_H_
+#define _GIT_VERSION_H_
+
+#define VINFO_COPYRIGHT_YEARS     "2013"
+#define VINFO_GITDESC             "@VERSION@"
+
+#define MAX_VERSION_LENGHT	10
+
+#endif  /* _GIT_VERSION_H_ */

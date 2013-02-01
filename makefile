@@ -111,6 +111,7 @@ ASRC =
 #     Each directory must be seperated by a space.
 EXTRAINCDIRS =	base/config/ base/inc/ 			\
 				common_AVR/include/				\
+				$(BUILD_DIR)/git-version/		\
 				extra/TWI/inc/					\
 				extra/S0/inc/ extra/S0/config/
 
@@ -226,6 +227,8 @@ OBJCOPY = avr-objcopy
 OBJDUMP = avr-objdump
 SIZE = avr-size
 
+# version
+GIT_VERSION	:= $(shell git describe --tags)
 
 # Programming support using avrdude.
 AVRDUDE = avrdude
@@ -274,7 +277,7 @@ ALL_ASFLAGS = -mmcu=$(MCU) -I. -x assembler-with-cpp $(ASFLAGS)
 
 
 # Default target.
-all: begin gccversion sizebefore copysrc $(TARGET).elf $(TARGET).hex $(TARGET).lss
+all: begin gccversion sizebefore copysrc git-version $(TARGET).elf $(TARGET).hex $(TARGET).lss
 	$(TARGET).lss $(TARGET).sym sizeafter finished end
 
 
@@ -306,6 +309,9 @@ sizeafter:
 gccversion : 
 	@$(CC) --version
 
+git-version:$(BUILD_DIR)
+	@mkdir -p $(BUILD_DIR)/git-version/
+	@sed -e "s/@VERSION@/$(shell git describe --tags)/" ./base/inc/git-version.h.in > $(BUILD_DIR)/git-version/git-version.h
 
 
 
