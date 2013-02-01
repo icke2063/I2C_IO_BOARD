@@ -30,16 +30,6 @@
 #define MAX_IO_PIN_NAME_LENGTH	15
 
 
-#define	PIN_DISABLED		0x00
-#define PIN_INPUT		0x01
-#define PIN_SWITCH		0x02
-#define PIN_PULSE		0x03
-#define PIN_S0			0x04
-#define PIN_UART		0x05
-#define PIN_OW			0x06
-#define PIN_ADC			0x07
-
-
 /**
 *intern IO Port mapping
 * - P_PORT_OI_?: pointer to port register

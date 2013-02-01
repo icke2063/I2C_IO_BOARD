@@ -26,33 +26,10 @@
 
 #include "slave_config.h"
 
-struct IO_pin{
-const unsigned char *PPORT;
-const unsigned char *PPIN;
-const unsigned char *PDDR;
-const unsigned char pin;
-};
-
 /**
  * @brief init AVR
  * - init i2c bus
  */
 void init(void);
-
-/**
- * @brief handle all virtual IO pins
- * - loop over all virtual IO pins and read function from eeprom
- * - set DDR,PORT of each virtual IO pin by function code
- * - use (if necessary) rxbuffer to set/unset IO pins
- */
-void handleIOpins(void);
-
-/**
- * @brief map virtual IO pins -> txbuffer[1,2]
- * - loop over all virtual IO pins and read function from eeprom
- * - read pin or set pin data by function code
- */
-void readIOpins(void);
-
 
 #endif /* SLAVE_MAIN_H_ */

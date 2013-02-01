@@ -35,18 +35,18 @@
  * rxbuffer[i2c_buffer_size];<- twislave.h (write)
  *
  * Byte 0		:	ID		(ro)
- * Byte 1		:	IO_PORT0	(rw)
+ * Byte 1		:	IO_PORT0	(rw)			#VIRTUAL_IO_START
  * Byte 2		:	IO_PORT1	(rw)
  * Byte 3		:	
  *
- * Byte [16;17]		:	IO0 data		(ro)
+ * Byte [16;17]		:	IO0 data		(ro)	#VIRTUAL_DATA_START
  *	...
  * Byte [38;39]		:	IOB data		(ro)
  *
  */
 #define VIRTUAL_IO_START	0x01
 #define VIRTUAL_DATA_START	0x10
-
+#define VERSION_START		0x30
 
 /**
  * second block is eeprom
