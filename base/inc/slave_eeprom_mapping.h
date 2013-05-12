@@ -26,6 +26,7 @@
 
 #include "slave_config.h"
 
+#define IOBOARD_MAX_IO_PINS	16
 /**
  * first block is virtual -> map SRAM into EEPROM :-)
  *
@@ -51,7 +52,7 @@
  * Byte [59;63]		:	PORT0 IO7 data		(rw)
  */
 
-#define BUFFER_SIZE 256
+#define I2C_BUFFER_SIZE		256
 #define VERSION_START		0x04
 #define VERSION_LENGTH		0x08
 
@@ -82,12 +83,6 @@
 #define EEPROM_FUNC_START		0x70
 
 #define EEPROM_NAME_START		0x100
-#define MAX_IO_PIN_NAME_LENGTH	16
-
-
-struct I2C_Slave_IO_PIN{
-unsigned char	pin_type;
-unsigned char	pin_name[MAX_IO_PIN_NAME_LENGTH];
-};
+#define IO_BOARD_MAX_IO_PIN_NAME_LENGTH	16
 
 #endif /* EEPROM_MAPPING_H_ */
