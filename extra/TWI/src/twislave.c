@@ -39,6 +39,7 @@
 
 //#################################################################################################*/
 
+#include <avr/io.h>
 #include <util/twi.h> 								// Bezeichnungen f�r Statuscodes in TWSR
 #include <avr/interrupt.h> 							// behandlung der Interrupts
 #include <stdint.h> 								// definiert Datentyp uint8_t
@@ -99,7 +100,7 @@ ISR (TWI_vect)
 
 				#else//8Bit Modus -> set low Byte (but thats all we need)
 					//Kontrolle ob gewünschte Adresse im erlaubten Bereich
-					if(data<(buffer_size+EEPROM_SIZE))
+					if(data<(BUFFER_SIZE+EEPROM_SIZE))
 						{//address valid
 
 							buffer_adr= data; //Bufferposition wie adressiert setzen
@@ -120,7 +121,7 @@ ISR (TWI_vect)
 			case ST_WAITFORHIGH://zweiter Zugriff, HighByte Buffer setzten
 				buffer_adr |= (data<<8); 				//low Byte Bufferposition setzen
 				//Kontrolle ob gewünschte Adresse im erlaubten bereich
-				if(buffer_adr >= (buffer_size+EEPROM_SIZE))
+				if(buffer_adr >= (BUFFER_SIZE + EEPROM_SIZE))
 					{
 						buffer_adr=0; //Adresse auf Null setzen. Ist das sinnvoll? TO DO!
 						slave_status = ST_ADDR_INVALID;
@@ -128,7 +129,7 @@ ISR (TWI_vect)
 						break;
 					}
 
-				slave_status = ST_ADDR_VALID;
+				slave_status = ST_ADDR_VALID;	//neuer status: gültige Addresse gesetzt
 				TWCR_ACK;		//Ack senden
 
 				break;
@@ -136,7 +137,7 @@ ISR (TWI_vect)
 			case ST_ADDR_VALID:
 
 				//write buffer data
-				if(buffer_adr<buffer_size)
+				if(buffer_adr < BUFFER_SIZE)
 				{
 						rxbuffer[buffer_adr] = data; //Daten in Buffer schreiben
 						buffer_adr++; //Buffer-Adresse weiterzählen für nächsten Schreibzugriff
@@ -145,9 +146,9 @@ ISR (TWI_vect)
 				}
 
 				//write eeprom
-				if(buffer_adr < (buffer_size+EEPROM_SIZE))
+				if(buffer_adr < (BUFFER_SIZE+EEPROM_SIZE))
 				{
-						eeprom_write_byte(buffer_adr-buffer_size, data); //Daten in eeprom schreiben
+						eeprom_write_byte(buffer_adr-BUFFER_SIZE, data); //Daten in eeprom schreiben
 						buffer_adr++; //Buffer-Adresse weiterzählen für nächsten Schreibzugriff
 						TWCR_ACK;		//Ack senden
 						break;
@@ -174,20 +175,20 @@ ISR (TWI_vect)
 
 
 			//read ram data
-			if(buffer_adr<buffer_size-1)
+			if(buffer_adr < BUFFER_SIZE-1)
 			{
 					TWDR = txbuffer[buffer_adr]; //Daten lesen
 			}
 
 			//read eeprom
-			if(buffer_adr>buffer_size && buffer_adr<buffer_size+EEPROM_SIZE-1)
+			if(buffer_adr>BUFFER_SIZE && buffer_adr<BUFFER_SIZE+EEPROM_SIZE-1)
 			{
-					TWDR = eeprom_read_byte(buffer_adr-buffer_size); //Daten aus eeprom lesen
+					TWDR = eeprom_read_byte(buffer_adr-BUFFER_SIZE); //Daten aus eeprom lesen
 			}
 
 
 			buffer_adr++; 							// bufferadresse f�r n�chstes Byte weiterz�hlen
-			if(buffer_adr<(buffer_size+EEPROM_SIZE-1)) 		// im Buffer ist mehr als ein Byte, das gesendet werden kann
+			if(buffer_adr<(BUFFER_SIZE+EEPROM_SIZE-1)) 		// im Buffer ist mehr als ein Byte, das gesendet werden kann
 				{
 					TWCR_ACK; 						// n�chstes Byte senden, danach ACK erwarten
 				}

@@ -17,6 +17,10 @@
 #define S0_0_PIN	2
 #define S0_1_PIN	3
 
+#define EEPROM_S0_0_STORE	0x01
+#define EEPROM_S0_1_STORE	0x01
+
+
 #define S0_interval	0xff
 
 

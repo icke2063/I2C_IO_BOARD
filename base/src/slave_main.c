@@ -10,10 +10,10 @@
  internen EEPROM mehr als 256 Adressen einnehmen.
 
  Die angeforderten Daten werden entweder aus dem txbuffer[] oder dem internen EEPROM gelesen.
- Zu schreibene Daten werden enteder nach rxbuffer[] oder in den internen EEPROM geschrieben. Je nachdem welche Adresse angegeben wird ändert sich die interne
+ Zu schreibende Daten werden entweder nach rxbuffer[] oder in den internen EEPROM geschrieben. Je nachdem welche Adresse angegeben wird ändert sich die interne
  Speicherzuordnung.
 
- Die Aufteilung des Speichers ist eeprom_mapping.h zu entnehmen.
+ Die Aufteilung des Speichers ist slave_eeprom_mapping.h zu entnehmen.
  Änderungen in rxbuffer[] werden in jedem Hauptschleifendurchlauf bearbeitet.
  Neue Eingangswerte werden in jedem Hauptschleifen durchlauf nach txbuffer[] geschrieben.
 
@@ -42,6 +42,7 @@
 //extern
 #include <stdlib.h>
 #include <avr/io.h>
+
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
 #include <avr/eeprom.h>
@@ -57,28 +58,34 @@
 
 #include "IO_handling.h"
 
+#include "git-version.h"
+
 
 
 //###################### Variablen
 
-struct IO_octet io_pins[MAX_VIRT_IO_PORT] = {
-		P_PORT_IO_0,P_PIN_IO_0,P_DDR_IO_0,PIN_IO_0,0,
-		P_PORT_IO_1,P_PIN_IO_1,P_DDR_IO_1,PIN_IO_1,0,
-		P_PORT_IO_2,P_PIN_IO_2,P_DDR_IO_2,PIN_IO_2,0,
-		P_PORT_IO_3,P_PIN_IO_3,P_DDR_IO_3,PIN_IO_3,0,
-		P_PORT_IO_4,P_PIN_IO_4,P_DDR_IO_4,PIN_IO_4,0,
-		P_PORT_IO_5,P_PIN_IO_5,P_DDR_IO_5,PIN_IO_5,0,
-		P_PORT_IO_6,P_PIN_IO_6,P_DDR_IO_6,PIN_IO_6,0,
-		P_PORT_IO_7,P_PIN_IO_7,P_DDR_IO_7,PIN_IO_7,0,
+struct virtual_IO_port io_pins[GET_VIRT_PORT_COUNT(COUNT_IO_PINS)] = {
+		&PORTB,&PINB,&DDRB,0,0,
+		&PORTB,&PINB,&DDRB,0,0,
+		&PORTB,&PINB,&DDRB,0,0,
+		&PORTB,&PINB,&DDRB,0,0,
 
-		P_PORT_IO_8,P_PIN_IO_8,P_DDR_IO_8,PIN_IO_8,0,
-		P_PORT_IO_9,P_PIN_IO_9,P_DDR_IO_9,PIN_IO_9,0,
-		P_PORT_IO_A,P_PIN_IO_A,P_DDR_IO_A,PIN_IO_A,0,
-		P_PORT_IO_B,P_PIN_IO_B,P_DDR_IO_B,PIN_IO_B,0,
-		0,0,0,0,0,
-		0,0,0,0,0,
-		0,0,0,0,0,
-		0,0,0,0,0
+		&PORTB,&PINB,&DDRB,0,0,
+		&PORTB,&PINB,&DDRB,0,0,
+		&PORTB,&PINB,&DDRB,0,0,
+		&PORTB,&PINB,&DDRB,0,0,
+
+
+
+		&PORTB,&PINB,&DDRB,0,0,
+		&PORTB,&PINB,&DDRB,0,0,
+		&PORTB,&PINB,&DDRB,0,0,
+		&PORTB,&PINB,&DDRB,0,0,
+
+		&PORTB,&PINB,&DDRB,0,0,
+		&PORTB,&PINB,&DDRB,0,0,
+		&PORTB,&PINB,&DDRB,0,0,
+		&PORTB,&PINB,&DDRB,0,0,
 		};
 
 
@@ -89,28 +96,26 @@ struct IO_octet io_pins[MAX_VIRT_IO_PORT] = {
 int main(void)
 {	
 unsigned short eeprom_address;
-unsigned char IO_Port;
+unsigned char IO_Port_address;
 
 
 init();
 
-
 while(1){
 
-	cli();
-	for (int pin = 0; pin < MAX_IO_PINS; pin++) {
+	cli();	// disable interrupts
+	for (int pin = 0; pin < COUNT_IO_PINS; pin++) {
 
-		IO_Port = VIRTUAL_IO_START + (pin/8);											/* calc position within rxbuffer where the incoming switching instructions stored */
+		IO_Port_address = VIRTUAL_IO_START + (pin/8) + 1;	/* calc position within rxbuffer where the incoming switching instructions stored */
+		eeprom_address = EEPROM_FUNC_START + pin;			/* calc position within eeprom */
 
-		eeprom_address = EEPROM_IO_START+(sizeof(struct I2C_Slave_IO_PIN)*pin);
 		eeprom_busy_wait ();
 		io_pins[pin/8].pins[pin%8].function_code = eeprom_read_byte(eeprom_address);	/* read function code from eeprom */
 
 		if((pin%8) == 7){
-			handleIOpins(&io_pins[pin/8], rxbuffer[IO_Port]);
-			rxbuffer[IO_Port]=0x00;														/* reset buffer */
-			//handleIOpins(&io_pins[pin/8], 0x40);
-			txbuffer[IO_Port] = readIOpins(&io_pins[pin/8]);
+			handleIOport(&io_pins[pin/8],rxbuffer[IO_Port_address]);
+			rxbuffer[IO_Port_address]=0x00;								/* reset buffer */
+			txbuffer[IO_Port_address] = readvirtIOport(&io_pins[pin/8]);
 		}
 	}
 	sei();
@@ -121,10 +126,22 @@ while(1){
 } //end.main
 
 
-void init(void)
-	{
+void init(void){
+
+	unsigned char I2C_addi = eeprom_read_byte(0);
+
+	/* set Slave ID */
+	txbuffer[0] = SLAVE_ID;
+
+	/* set IO Pin count */
+	txbuffer[VIRTUAL_IO_START] = COUNT_IO_PINS;
+
+	/* copy git version into txbuffer */
+	strncpy(txbuffer[VERSION_START], VINFO_GITDESC, VERSION_LENGTH);
+
 	cli();
 	//### TWI
-	init_twi_slave(SLAVE_ADRESSE);			//TWI als Slave mit Adresse slaveadr starten
-	sei();
-	}
+	init_twi_slave(I2C_addi<128?I2C_addi:127);			//TWI als Slave mit Adresse slaveadr starten
+
+	sei();									//enable interrupts
+}

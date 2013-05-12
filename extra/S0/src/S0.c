@@ -22,7 +22,10 @@
  Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA. 
 ------------------------------------------------------------------------------*/
 #include "S0.h"
+#include "S0_config.h"
 #include "slave_eeprom_mapping.h"
+
+#include <avr/io.h>
 #include <avr/eeprom.h>
 
 ISR(INT0_vect)
@@ -79,9 +82,6 @@ void S0_Stop (uint8_t addr)
  	  }
    }
 }
-
-
-
 
 
 //----------------------------------------------------------------------------

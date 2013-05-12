@@ -26,8 +26,6 @@
 
 #include "slave_config.h"
 
-#define EEPROM_SIZE 1024	//Größe des EEPROMS
-
 /**
  * first block is virtual -> map SRAM into EEPROM :-)
  *
@@ -35,43 +33,61 @@
  * rxbuffer[i2c_buffer_size];<- twislave.h (write)
  *
  * Byte 0		:	ID		(ro)
- * Byte 1		:	IO_PORT0	(rw)			#VIRTUAL_IO_START
- * Byte 2		:	IO_PORT1	(rw)
- * Byte 3		:	
+ * Byte 1		:
+ * Byte 2		:
+ * Byte 3		:
  *
- * Byte [16;17]		:	IO0 data		(ro)	#VIRTUAL_DATA_START
- *	...
- * Byte [38;39]		:	IOB data		(ro)
- *
+ * Byte [4..7]	:	SW Version					#VERSION_START
  */
-#define VIRTUAL_IO_START	0x01
-#define VIRTUAL_DATA_START	0x10
-#define VERSION_START		0x30
+
+ /*
+ * Byte 16		:	VIO_PORT_COUNT	(ro)		#VIRTUAL_IO_START
+ * Byte 17		:	VIO_PORT0	(rw)
+ * Byte 18		:	VIO_PORT1	(rw)
+
+
+ * Byte [32;36]		:	PORT0 IO0 data		(rw)	#VIRTUAL_DATA_START
+ *	...
+ * Byte [59;63]		:	PORT0 IO7 data		(rw)
+ */
+
+#define BUFFER_SIZE 256
+#define VERSION_START		0x04
+#define VERSION_LENGTH		0x08
+
+
+#define VIRTUAL_IO_START	0x10
+#define VIRTUAL_DATA_START	0x20
 
 /**
  * second block is eeprom
  * 
- * IO_EEPROM_START:
- * 	- IO_PIN0: 	Byte 0 	 :function code
- *	 		Byte 1..x:name
- *	- ...
- *	- IO_PINX
+ * Byte 0		:	I2C ADDRESS		(ro)
  *
+ * Byte [32;36]		:	PORT0 IO0 data		(rw)			#EEPROM_DATA_START
+ *	...
+ * Byte [59;63]		:	PORT0 IO7 data		(rw)
+ *
+ * Byte 0x70		:	Function Codes
+ *
+ * Byte 0x100			:	PORT0 IO0 FUNCTION Code (rw)	#EEPROM_NAME_START
+ * Byte [0x101;0x10F]	:	PORT0 IO0 Name (rw)
+ *
+ * Byte 0x170			:	PORT0 IO7 FUNCTION Code (rw)
+ * Byte [0x171;0x17F]	:	PORT0 IO7 Name (rw)
+
  */
-#define EEPROM_IO_START	0x20
+#define EEPROM_SIZE 			1024	//Größe des EEPROMS
+#define EEPROM_DATA_START		0x20
+#define EEPROM_FUNC_START		0x70
+
+#define EEPROM_NAME_START		0x100
+#define MAX_IO_PIN_NAME_LENGTH	16
+
 
 struct I2C_Slave_IO_PIN{
 unsigned char	pin_type;
 unsigned char	pin_name[MAX_IO_PIN_NAME_LENGTH];
 };
-
-#define EEPROM_IO_END	EEPROM_IO_START+(MAX_IO_PINS * sizeof(struct I2C_Slave_IO_PIN))
-
-#define EEPROM_S0_0_STORE	EEPROM_IO_END
-#define EEPROM_S0_0_FACTOR	EEPROM_S0_0_STORE + sizeof(uint32_t)
-
-#define EEPROM_S0_1_STORE	EEPROM_S0_0_FACTOR + sizeof(uint8_t)
-#define EEPROM_S0_1_FACTOR	EEPROM_S0_1_STORE + sizeof(uint32_t)
-
 
 #endif /* EEPROM_MAPPING_H_ */
