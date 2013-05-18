@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="6.2">
+<eagle version="6.3">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -13664,7 +13664,7 @@ Source: http://products.nichicon.co.jp/en/pdf/XJA043/e-ud.pdf</description>
 <part name="R3" library="resistor" deviceset="R-EU_" device="0207/2V" value="22K"/>
 <part name="R2" library="resistor" deviceset="R-EU_" device="0207/2V" value="22K"/>
 <part name="JP2" library="pinhead" deviceset="PINHD-1X5" device=""/>
-<part name="R5" library="resistor" deviceset="R-EU_" device="0207/2V"/>
+<part name="R5" library="resistor" deviceset="R-EU_" device="0207/2V" value="22K"/>
 <part name="R1" library="resistor" deviceset="R-EU_" device="0207/2V" value="12K"/>
 <part name="C3" library="rcl" deviceset="CPOL-EU" device="E2,5-6E"/>
 <part name="D3" library="diode" deviceset="ZENER-DIODE" device="ZD-2.5"/>
