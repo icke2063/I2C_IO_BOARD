@@ -85,7 +85,7 @@ OPT = s
 # Base
 LOCAL_SRC = 	base/src/slave_main.c
 #common_AVR
-LOCAL_SRC += 	common_AVR/src/IO_handling.c
+LOCAL_SRC += 	common_AVR/src/IO_handling.c common_AVR/src/usart.c
 
 # extra
 #TWI
@@ -111,6 +111,7 @@ ASRC =
 #     Each directory must be seperated by a space.
 EXTRAINCDIRS =	base/config/ base/inc/ 			\
 				common_AVR/include/				\
+				common_AVR/config/				\
 				$(BUILD_DIR)/git-version/		\
 				extra/TWI/inc/					\
 				extra/S0/inc/ extra/S0/config/

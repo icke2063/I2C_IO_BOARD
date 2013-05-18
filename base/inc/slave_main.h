@@ -26,10 +26,29 @@
 
 #include "slave_config.h"
 
+#include "usart.h"
+
+/**
+ * debug macro
+ * insert write function to get it work
+ */
+#define I2C_MAIN_DEBUG	usart_write
+//define I2C_MAIN_DEBUG(...)
+
 /**
  * @brief init AVR
  * - init i2c bus
  */
 void init(void);
+
+/**
+ * print address information for all configured virtual IO pins
+ */
+void printIOsstruct(void);
+
+/**
+ * handle virtual IO pins by usage of information from I2C buffers
+ */
+void handle_vio(void);
 
 #endif /* SLAVE_MAIN_H_ */
