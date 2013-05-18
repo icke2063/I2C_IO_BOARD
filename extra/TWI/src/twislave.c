@@ -77,6 +77,7 @@ void init_twi_slave(uint8_t adr)
 //ein Statuscode, anhand dessen die Situation festgestellt werden kann.
 ISR (TWI_vect)
 {
+	TWISLAVE_DEBUG("I2C:0x%x\r\n",TW_STATUS);
 	uint8_t data=0;
 	switch (TW_STATUS) 								// TWI-Statusregister pr�fen und n�tige Aktion bestimmen 
 		{
@@ -100,7 +101,7 @@ ISR (TWI_vect)
 
 				#else//8Bit Modus -> set low Byte (but thats all we need)
 					//Kontrolle ob gewünschte Adresse im erlaubten Bereich
-					if(data<(BUFFER_SIZE+EEPROM_SIZE))
+					if(data<(I2C_BUFFER_SIZE+EEPROM_SIZE))
 						{//address valid
 
 							buffer_adr= data; //Bufferposition wie adressiert setzen
@@ -121,7 +122,7 @@ ISR (TWI_vect)
 			case ST_WAITFORHIGH://zweiter Zugriff, HighByte Buffer setzten
 				buffer_adr |= (data<<8); 				//low Byte Bufferposition setzen
 				//Kontrolle ob gewünschte Adresse im erlaubten bereich
-				if(buffer_adr >= (BUFFER_SIZE + EEPROM_SIZE))
+				if(buffer_adr >= (I2C_BUFFER_SIZE + EEPROM_SIZE))
 					{
 						buffer_adr=0; //Adresse auf Null setzen. Ist das sinnvoll? TO DO!
 						slave_status = ST_ADDR_INVALID;
@@ -136,8 +137,10 @@ ISR (TWI_vect)
 		#endif
 			case ST_ADDR_VALID:
 
+				TWISLAVE_DEBUG("W[0x%x]:0x%x\r\n",buffer_adr,data);
+
 				//write buffer data
-				if(buffer_adr < BUFFER_SIZE)
+				if(buffer_adr < I2C_BUFFER_SIZE)
 				{
 						rxbuffer[buffer_adr] = data; //Daten in Buffer schreiben
 						buffer_adr++; //Buffer-Adresse weiterzählen für nächsten Schreibzugriff
@@ -146,9 +149,9 @@ ISR (TWI_vect)
 				}
 
 				//write eeprom
-				if(buffer_adr < (BUFFER_SIZE+EEPROM_SIZE))
+				if(buffer_adr < (I2C_BUFFER_SIZE+EEPROM_SIZE))
 				{
-						eeprom_write_byte(buffer_adr-BUFFER_SIZE, data); //Daten in eeprom schreiben
+						eeprom_write_byte(buffer_adr-I2C_BUFFER_SIZE, data); //Daten in eeprom schreiben
 						buffer_adr++; //Buffer-Adresse weiterzählen für nächsten Schreibzugriff
 						TWCR_ACK;		//Ack senden
 						break;
@@ -175,20 +178,20 @@ ISR (TWI_vect)
 
 
 			//read ram data
-			if(buffer_adr < BUFFER_SIZE-1)
+			if(buffer_adr < I2C_BUFFER_SIZE-1)
 			{
 					TWDR = txbuffer[buffer_adr]; //Daten lesen
 			}
 
 			//read eeprom
-			if(buffer_adr>BUFFER_SIZE && buffer_adr<BUFFER_SIZE+EEPROM_SIZE-1)
+			if(buffer_adr>I2C_BUFFER_SIZE && buffer_adr<I2C_BUFFER_SIZE+EEPROM_SIZE-1)
 			{
-					TWDR = eeprom_read_byte(buffer_adr-BUFFER_SIZE); //Daten aus eeprom lesen
+					TWDR = eeprom_read_byte(buffer_adr-I2C_BUFFER_SIZE); //Daten aus eeprom lesen
 			}
 
 
 			buffer_adr++; 							// bufferadresse f�r n�chstes Byte weiterz�hlen
-			if(buffer_adr<(BUFFER_SIZE+EEPROM_SIZE-1)) 		// im Buffer ist mehr als ein Byte, das gesendet werden kann
+			if(buffer_adr<(I2C_BUFFER_SIZE+EEPROM_SIZE-1)) 		// im Buffer ist mehr als ein Byte, das gesendet werden kann
 				{
 					TWCR_ACK; 						// n�chstes Byte senden, danach ACK erwarten
 				}
