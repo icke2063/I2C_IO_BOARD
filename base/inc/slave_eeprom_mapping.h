@@ -34,30 +34,36 @@
  * rxbuffer[i2c_buffer_size];<- twislave.h (write)
  *
  * Byte 0		:	ID		(ro)
- * Byte 1		:
+ * Byte 1		:	ID		(ro)
  * Byte 2		:
  * Byte 3		:
  *
- * Byte [4..7]	:	SW Version					#VERSION_START
+ * Byte [4..F]	:	SW Version					#VERSION_START
  */
 
- /*
- * Byte 16		:	VIO_PORT_COUNT	(ro)		#VIRTUAL_IO_START
- * Byte 17		:	VIO_PORT0	(rw)
- * Byte 18		:	VIO_PORT1	(rw)
+ /**
+ * Byte 16		:	VIO_PORT_COUNT	(ro)		#VIRTUAL_IO_COUNT
+ * Byte 17		:	VIO_PORT_COUNT	(ro)
+ *
+ * Byte 20		:	VIO_PORT0	(rw)			#VIRTUAL_IO_START
+ * Byte 21		:	VIO_MASK0	(ro)
+ * Byte 22		:	VIO_PORT1	(rw)
+ * Byte 23		:	VIO_MASK1	(ro)
 
 
- * Byte [32;36]		:	PORT0 IO0 data		(rw)	#VIRTUAL_DATA_START
+ * Byte [32;35]		:	PORT0 IO0 data		(rw)	#VIRTUAL_DATA_START
+ * Byte [36;39]		:	PORT0 IO0 data		(rw)
  *	...
- * Byte [59;63]		:	PORT0 IO7 data		(rw)
+ * Byte [60;63]		:	PORT0 IO7 data		(rw)
  */
 
 #define I2C_BUFFER_SIZE		256
 #define VERSION_START		0x04
-#define VERSION_LENGTH		0x08
+#define VERSION_LENGTH		0x0B
 
+#define VIRTUAL_IO_COUNT	0x10
+#define VIRTUAL_IO_START	0x14
 
-#define VIRTUAL_IO_START	0x10
 #define VIRTUAL_DATA_START	0x20
 
 /**
