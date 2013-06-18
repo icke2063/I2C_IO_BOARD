@@ -62,6 +62,7 @@
 //########################################################################################## init_twi_slave 
 void init_twi_slave(uint8_t adr)
 {
+	cli();
 	TWISLAVE_DEBUG("I2C init:%x\r\n",adr);
 	TWAR= (adr<<1); //Adresse setzen
 	TWCR &= ~(1<<TWSTA)|(1<<TWSTO);

@@ -27,7 +27,6 @@
 #include "slave_config.h"
 
 #include "usart.h"
-
 /**
  * debug macro
  * insert write function to get it work
@@ -36,7 +35,9 @@
 //define I2C_MAIN_DEBUG(...)
 
 /**
- * @brief init AVR
+ * init board
+ * - init used virtual IO pins
+ * - init txbuffer
  * - init i2c bus
  */
 void init(void);
@@ -50,5 +51,10 @@ void printIOsstruct(void);
  * handle virtual IO pins by usage of information from I2C buffers
  */
 void handle_vio(void);
+/**
+ * read function codes from eeprom and write it to
+ * io_pins[]
+ */
+void getFuncCode(void);
 
 #endif /* SLAVE_MAIN_H_ */
