@@ -62,6 +62,8 @@
 //########################################################################################## init_twi_slave 
 void init_twi_slave(uint8_t adr)
 {
+	cli();
+	TWISLAVE_DEBUG("I2C init:%x\r\n",adr);
 	TWAR= (adr<<1); //Adresse setzen
 	TWCR &= ~(1<<TWSTA)|(1<<TWSTO);
 	TWCR|= (1<<TWEA) | (1<<TWEN)|(1<<TWIE);
@@ -88,14 +90,16 @@ ISR (TWI_vect)
 			break;
 
 		case TW_SR_DATA_ACK: 						// 0x80 Slave Receiver,Daten empfangen
+			TWISLAVE_DEBUG("WRITE\r\n");
 			data=TWDR; 								// Empfangene Daten auslesen
 
 			switch(slave_status){
 			case ST_ADDR_INVALID://erster Zugriff, Bufferposition setzen
 
-				#ifdef USE16BITADDRESS	//16Bit Modus -> set low Byte
-					buffer_adr= data;
-					slave_status = ST_WAITFORHIGH;		//Status setzen
+				#ifdef USE16BITADDRESS	//16Bit Modus -> set high Byte
+					TWISLAVE_DEBUG("High:0x%x\r\n",data);
+					buffer_adr= (data<<8);
+					slave_status = ST_WAITFORLOW;		//Status setzen
 					TWCR_ACK;		//Ack senden
 					break;
 
@@ -119,8 +123,9 @@ ISR (TWI_vect)
 				#endif
 				break;	//sollte nie erreicht werden
 		#ifdef USE16BITADDRESS
-			case ST_WAITFORHIGH://zweiter Zugriff, HighByte Buffer setzten
-				buffer_adr |= (data<<8); 				//low Byte Bufferposition setzen
+			case ST_WAITFORLOW://zweiter Zugriff, LowByte Buffer setzten
+				TWISLAVE_DEBUG("Low:0x%x\r\n",data);
+				buffer_adr |= data; 				//low Byte Bufferposition setzen
 				//Kontrolle ob gewünschte Adresse im erlaubten bereich
 				if(buffer_adr >= (I2C_BUFFER_SIZE + EEPROM_SIZE))
 					{
@@ -168,30 +173,39 @@ ISR (TWI_vect)
 
 		case TW_ST_SLA_ACK: 						//
 		case TW_ST_DATA_ACK: 						// 0xB8 Slave Transmitter, weitere Daten wurden angefordert
+			TWISLAVE_DEBUG("GET[0x%x,0x%x]\r\n",buffer_adr,slave_status);
+			if (slave_status == ST_WAITFORLOW){					// nur 1Byte Leseadresse angegeben -> passt schon ;-)
+				TWISLAVE_DEBUG("8Bit\r\n");
+				buffer_adr = (buffer_adr >> 8);					// shift high to low
+				if(buffer_adr < (I2C_BUFFER_SIZE + EEPROM_SIZE))
+				slave_status = ST_ADDR_VALID;
+			}
 
-			if (slave_status == ST_ADDR_INVALID) 				// zuvor keine Leseadresse angegeben!
-				{
-					TWDR = 0;
-					TWCR_NACK;
-					break;
-				}	
-
+			if (slave_status != ST_ADDR_VALID) 				// Leseadresse ungültig!
+			{
+				TWISLAVE_DEBUG("invalid\r\n");
+				TWDR = 0;
+				TWCR_NACK;
+				break;
+			}
 
 			//read ram data
 			if(buffer_adr < I2C_BUFFER_SIZE-1)
 			{
-					TWDR = txbuffer[buffer_adr]; //Daten lesen
+					data = txbuffer[buffer_adr]; //Daten lesen;
+					TWDR = data;
 			}
 
 			//read eeprom
-			if(buffer_adr>I2C_BUFFER_SIZE && buffer_adr<I2C_BUFFER_SIZE+EEPROM_SIZE-1)
+			if(buffer_adr>=I2C_BUFFER_SIZE && buffer_adr<I2C_BUFFER_SIZE+EEPROM_SIZE-1)
 			{
-					TWDR = eeprom_read_byte(buffer_adr-I2C_BUFFER_SIZE); //Daten aus eeprom lesen
+					data = eeprom_read_byte(buffer_adr-I2C_BUFFER_SIZE); //Daten aus eeprom lesen
+					TWDR = data;
 			}
 
-
+			TWISLAVE_DEBUG("R[0x%x]:0x%x\r\n",buffer_adr,data);
 			buffer_adr++; 							// bufferadresse f�r n�chstes Byte weiterz�hlen
-			if(buffer_adr<(I2C_BUFFER_SIZE+EEPROM_SIZE-1)) 		// im Buffer ist mehr als ein Byte, das gesendet werden kann
+			if(buffer_adr<(I2C_BUFFER_SIZE+EEPROM_SIZE-1)) 		// im Buffer ist mehr als ein Byte, das gesendet werden kann -> erhöhe buffer
 				{
 					TWCR_ACK; 						// n�chstes Byte senden, danach ACK erwarten
 				}

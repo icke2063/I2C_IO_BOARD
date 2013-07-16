@@ -82,7 +82,7 @@ volatile uint16_t slave_status; 					//Status für den Slave
 void init_twi_slave(uint8_t adr);
 
 #define	ST_ADDR_INVALID		0x00
-#define	ST_WAITFORHIGH		0x01
+#define	ST_WAITFORLOW		0x01
 #define	ST_ADDR_VALID		0x02
 
 
