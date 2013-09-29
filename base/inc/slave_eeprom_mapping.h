@@ -35,7 +35,7 @@
  *
  * - Byte 0		:	ID		(ro)
  * - Byte 1		:	ID		(ro)
- * - Byte 2		:
+ * - Byte 2		:	EEPROM_WRITE_ENABLE
  * - Byte 3		:
  *
  * - Byte [4..15]	:	SW Version					#VERSION_START
@@ -62,6 +62,10 @@
 #define VIRTUAL_IO_START	0x14
 
 #define VIRTUAL_DATA_START	0x20
+
+#define EEPROM_WRITE_ENABLE 0x02
+#define EEPROM_WRITE_CODE	0x2F
+
 
 /**
  * second block is eeprom (add offset of #I2C_BUFFER_SIZE)

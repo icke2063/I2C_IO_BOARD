@@ -154,7 +154,7 @@ ISR (TWI_vect)
 				}
 
 				//write eeprom
-				if(buffer_adr < (I2C_BUFFER_SIZE+EEPROM_SIZE))
+				if((rxbuffer[EEPROM_WRITE_ENABLE] == EEPROM_WRITE_CODE && rxbuffer[EEPROM_WRITE_ENABLE+1] == EEPROM_WRITE_CODE) && (buffer_adr < (I2C_BUFFER_SIZE+EEPROM_SIZE)))
 				{
 						eeprom_write_byte(buffer_adr-I2C_BUFFER_SIZE, data); //Daten in eeprom schreiben
 						buffer_adr++; //Buffer-Adresse weiterzählen für nächsten Schreibzugriff
