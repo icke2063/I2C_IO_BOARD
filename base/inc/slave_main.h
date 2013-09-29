@@ -24,7 +24,7 @@
 #ifndef SLAVE_MAIN_H_
 #define SLAVE_MAIN_H_
 
-#include "slave_config.h"
+#include <default_iopin.h>
 
 #include "usart.h"
 /**
@@ -41,6 +41,11 @@
  * - init i2c bus
  */
 void init(void);
+
+/**
+ * update txbuffer
+ */
+void update_tx(void);
 
 /**
  * print address information for all configured virtual IO pins

@@ -81,6 +81,7 @@
  * - Byte [0x101;0x10F]	:	PORT0 IO0 Name (rw)				#EEPROM_NAME_START
  */
 #define EEPROM_SIZE 			1024	//Größe des EEPROMS
+#define EEPROM_PULSE_TIME		0x02
 #define EEPROM_DATA_START		0x20
 #define EEPROM_FUNC_START		0x70
 

@@ -36,14 +36,15 @@
  ------------------------------------------------------------------------------*/
 
 #ifndef F_CPU
-#define F_CPU 1000000UL
+#define F_CPU 1000000UL	//1Mhz internal oszi
 #endif
 
-//extern
+//std lib
 #include <stdlib.h>
-#include <avr/io.h>
 #include <string.h>
 
+//std avr
+#include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
 #include <avr/eeprom.h>
@@ -54,11 +55,15 @@
 //jtronics
 #include "twislave.h"
 
+//ulrich radig
+#include "usart.h"
+
 //icke2063
 #include <slave_main.h>
 #include <slave_config.h>
 #include <slave_eeprom_mapping.h>
 
+//common_AVR
 #include "IO_handling.h"
 
 #include "git-version.h"
@@ -87,27 +92,29 @@
 //		0, 0, 0, 0, 0, /* IO0F */
 //};
 
-//Prototype Board
+//configured port pins (by slave_config.h)
 struct virtual_IO_port io_pins[GET_VIRT_PORT_COUNT(COUNT_IO_PINS)] = {
-		&PORTC,	&PINC, &DDRC, 2, 0, /* IO00 */
-		&PORTC, &PINC, &DDRC, 3, 0, /* IO01 */
-		&PORTC, &PINC, &DDRC, 1, 0, /* IO02 */
-		&PORTC, &PINC, &DDRC, 0, 0, /* IO03 */
-		&PORTD, &PIND, &DDRD, 0, 0, /* IO04  RXD*/
-		0, 0, 0, 0, 0, /* IO05  TXD*/
+		VIO_PORT_0, VIO_PIN_0, VIO_DDR_0, VIO_PINNR_0, 0,
+		VIO_PORT_1, VIO_PIN_1, VIO_DDR_1, VIO_PINNR_1, 0,
+		VIO_PORT_2, VIO_PIN_2, VIO_DDR_2, VIO_PINNR_2, 0,
+		VIO_PORT_3, VIO_PIN_3, VIO_DDR_3, VIO_PINNR_3, 0,
+		VIO_PORT_4, VIO_PIN_4, VIO_DDR_4, VIO_PINNR_4, 0,
+		VIO_PORT_5, VIO_PIN_5, VIO_DDR_5, VIO_PINNR_5, 0,
+		VIO_PORT_6, VIO_PIN_6, VIO_DDR_6, VIO_PINNR_6, 0,
+		VIO_PORT_7, VIO_PIN_7, VIO_DDR_7, VIO_PINNR_7, 0,
 
-		&PORTD, &PIND, &DDRD, 2, 0, /* IO06 */
-		&PORTD, &PIND, &DDRD, 3, 0, /* IO07 */
-		&PORTD, &PIND, &DDRD, 4, 0, /* IO08 */
-		&PORTD, &PIND, &DDRD, 5, 0, /* IO09 */
-		&PORTD, &PIND, &DDRD, 6, 0, /* IO0A */
-		&PORTD, &PIND, &DDRD, 7, 0, /* IO0B */
-		0, 0, 0, 0, 0, /* IO0C */
-		0, 0, 0, 0, 0, /* IO0D */
-
-		0, 0, 0, 0, 0, /* IO0E */
-		0, 0, 0, 0, 0, /* IO0F */
+		VIO_PORT_8, VIO_PIN_8, VIO_DDR_8, VIO_PINNR_8, 0,
+		VIO_PORT_9, VIO_PIN_9, VIO_DDR_9, VIO_PINNR_9, 0,
+		VIO_PORT_A, VIO_PIN_A, VIO_DDR_A, VIO_PINNR_A, 0,
+		VIO_PORT_B, VIO_PIN_B, VIO_DDR_B, VIO_PINNR_B, 0,
+		VIO_PORT_C, VIO_PIN_C, VIO_DDR_C, VIO_PINNR_C, 0,
+		VIO_PORT_D, VIO_PIN_D, VIO_DDR_D, VIO_PINNR_D, 0,
+		VIO_PORT_E, VIO_PIN_E, VIO_DDR_E, VIO_PINNR_E, 0,
+		VIO_PORT_F, VIO_PIN_F, VIO_DDR_F, VIO_PINNR_F, 0,
 };
+
+struct IO_pin uart_tx = {UARTTX_PORT, UARTTX_PIN, UARTTX_DDR, UARTTX_PINNR, 0,};
+
 
 ISR(__vector_default){usart_write("ISR\n\r");}
 
@@ -117,14 +124,25 @@ ISR(__vector_default){usart_write("ISR\n\r");}
 int main(void) {
 	usart_init(BAUDRATE);
 
-	usart_write("\n\rSystem Ready\n\r");
-	usart_write("Compiliert am "__DATE__" um "__TIME__"\r\n");
-	usart_write("Compiliert mit GCC Version "__VERSION__"\r\n");
+	/**
+	 * get function codes of all configured pins
+	 * - disable uart if pin is used
+	 */
+	getFuncCode();
+
+	usart_write("\n\rSystem_Ready\n\r");
+	usart_write("Compiliert_am_"__DATE__"_um_"__TIME__"\r\n");
+	usart_write("Compiliert_mit_GCC_Version_"__VERSION__"\r\n");
 
 	init();
 	//printIOsstruct();
 
 	while (1) {
+		//get new pulse time from eeprom
+		pulse_time = eeprom_read_byte(EEPROM_PULSE_TIME) << 8;
+		pulse_time |= eeprom_read_byte(EEPROM_PULSE_TIME+1);
+
+		update_tx();
 		handle_vio();
 		_delay_ms(1000);
 	} //end.while
@@ -136,10 +154,10 @@ int main(void) {
 void init(void) {
 	unsigned char port_num = 0;
 
-	getFuncCode();
+	getFuncCode();	//read function codes from eeprom
 	for (port_num = 0; port_num < GET_VIRT_PORT_COUNT(COUNT_IO_PINS);
 			port_num++) {
-		initIOport(&(io_pins[port_num]));
+		initIOport(&(io_pins[port_num]));	//first pin initialisation (all configured pins)
 	}
 
 	/* set Slave ID */
@@ -166,7 +184,7 @@ void init(void) {
 	usart_write("init_done\r\n");
 }
 
-void printIOsstruct(void) {
+void printIOsstruct(void) {//deprecated: done by initIOPort
 	unsigned char pin_num;
 	usart_write("PortCount:%i\r\n", GET_VIRT_PORT_COUNT(COUNT_IO_PINS));
 	for (pin_num = 0; pin_num < COUNT_IO_PINS; pin_num++) {
@@ -185,11 +203,28 @@ void getFuncCode(void) {
 	for (pin_num = 0; pin_num < COUNT_IO_PINS; pin_num++) {
 		/* get function codes */
 		eeprom_address = EEPROM_FUNC_START + (pin_num * 2) + 1; /* calc position within eeprom */
-
 		eeprom_busy_wait();
+
 		io_pins[pin_num / 8].pins[pin_num % 8].function_code = eeprom_read_byte(
-				eeprom_address); /* read function code from eeprom */
+						eeprom_address); /* read function code from eeprom */
+
+		//check for uart pin
+		if(io_pins[pin_num / 8].pins[pin_num % 8].PPORT == uart_tx.PPORT
+				&& io_pins[pin_num / 8].pins[pin_num % 8].pin == uart_tx.pin){
+			//found uart_tx pin
+			if(io_pins[pin_num / 8].pins[pin_num % 8].function_code != PIN_DISABLED){
+				usart_status.usart_disable = 1;	//disable uart output
+			} else {
+				usart_status.usart_disable = 0;	//enable uart output
+			}
+		}
 	}
+}
+
+void update_tx(void){
+	txbuffer[EEPROM_WRITE_ENABLE] = rxbuffer[EEPROM_WRITE_ENABLE];
+	txbuffer[EEPROM_WRITE_ENABLE+1] = rxbuffer[EEPROM_WRITE_ENABLE+1];
+
 }
 
 void handle_vio(void) {
