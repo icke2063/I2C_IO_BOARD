@@ -24,7 +24,12 @@
 #ifndef SLAVE_EEPROM_MAPPING_H_
 #define SLAVE_EEPROM_MAPPING_H_
 
-#include "slave_config.h"
+/// Slave Identification Number
+/**
+ * This number is used by i2c master to identify this i2c slave as "i2c_io_board"
+ */
+#define	SLAVE_ID	0x2A
+
 
 #define IOBOARD_MAX_IO_PINS	16
 /**

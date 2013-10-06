@@ -24,11 +24,7 @@
 #ifndef _SLAVE_CONFIG_H_
 #define _SLAVE_CONFIG_H_
 
-/// Slave Identification Number
-/**
- * This number is used by i2c master to identify this i2c slave as "i2c_io_board"
- */
-#define	SLAVE_ID	0x2A
+
 /// default I2C address if vlue of eeprom is unusable
 #define DEFAULT_SLAVE_ADRESSE 0x51
 /// count of real useable pins
