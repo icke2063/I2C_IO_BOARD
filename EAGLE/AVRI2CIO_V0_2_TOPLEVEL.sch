@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="6.3">
+<eagle version="6.5.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -793,11 +793,6 @@ Source: avr.lbr</description>
 <wire x1="149.86" y1="-170.18" x2="154.94" y2="-170.18" width="0.1524" layer="91"/>
 <label x="154.94" y="-170.18" size="1.778" layer="95"/>
 </segment>
-<segment>
-<wire x1="25.4" y1="-124.46" x2="35.56" y2="-124.46" width="0.1524" layer="91"/>
-<label x="38.1" y="-124.46" size="1.778" layer="95"/>
-<pinref part="JP1" gate="A" pin="1"/>
-</segment>
 </net>
 <net name="PB4" class="0">
 <segment>
@@ -870,6 +865,13 @@ Source: avr.lbr</description>
 <wire x1="215.9" y1="-152.4" x2="205.74" y2="-152.4" width="0.1524" layer="91"/>
 <label x="198.12" y="-152.4" size="1.778" layer="95" rot="MR180"/>
 <pinref part="JP2" gate="A" pin="6"/>
+</segment>
+</net>
+<net name="N$1" class="0">
+<segment>
+<pinref part="JP1" gate="A" pin="1"/>
+<wire x1="25.4" y1="-124.46" x2="35.56" y2="-124.46" width="0.1524" layer="91"/>
+<label x="38.1" y="-124.46" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>
