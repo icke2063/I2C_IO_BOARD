@@ -1,2 +1,4 @@
 /Hexfiles/*
 /build/*
+EAGLE/*.b#*
+EAGLE/*.s#*
