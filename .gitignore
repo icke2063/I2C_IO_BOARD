@@ -1,4 +1,5 @@
 /Hexfiles/*
 /build/*
-EAGLE/*.b#*
-EAGLE/*.s#*
+*.b#*
+*.s#*
+doxy.output/*
