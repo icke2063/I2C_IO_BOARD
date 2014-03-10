@@ -1,2 +1,5 @@
 /Hexfiles/*
 /build/*
+*.b#*
+*.s#*
+doxy.output/*
