@@ -60,6 +60,7 @@
  * - Byte [60;63]		:	PORT0 IO7 data		(rw)
  */
 #define I2C_BUFFER_SIZE		256
+#define EEPROM_WRITE_ENABLE 0x02
 #define VERSION_START		0x04
 #define VERSION_LENGTH		0x0B
 
@@ -68,7 +69,6 @@
 
 #define VIRTUAL_DATA_START	0x20
 
-#define EEPROM_WRITE_ENABLE 0x02
 #define EEPROM_WRITE_CODE	0x2F
 
 
@@ -76,6 +76,7 @@
  * second block is eeprom (add offset of #I2C_BUFFER_SIZE)
  * 
  * - Byte 0		:	I2C ADDRESS		(ro)
+ * - Byte 2		:	EEPROM_PULSE_TIME (rw)
  *
  * - Byte [32;35]		:	PORT0 IO0 data		(rw)			#EEPROM_DATA_START
  * - ...
