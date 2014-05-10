@@ -57,6 +57,7 @@
 
 //ulrich radig
 #include "usart.h"
+#include "timer.h"
 
 //icke2063
 #include <slave_main.h>
@@ -66,9 +67,19 @@
 //common_AVR
 #include "IO_handling.h"
 
+#include "1-wire_config.h"
+#ifdef USE_OW
+	#include <ds18x20.h>
+#include <onewire.h>
+#endif
+
 #include "git-version.h"
 
 //###################### Variablen
+
+unsigned char hh;
+unsigned char mm;
+unsigned char ss;
 
 //Evaluation Board
 //struct virtual_IO_port io_pins[GET_VIRT_PORT_COUNT(COUNT_IO_PINS)] = {
@@ -122,6 +133,8 @@ ISR(__vector_default){usart_write("ISR\n\r");}
 //see main.h
 
 int main(void) {
+	timer_init();
+
 	usart_init(BAUDRATE);
 
 	/**
@@ -138,6 +151,13 @@ int main(void) {
 	//printIOsstruct();
 
 	while (1) {
+		// RoBue:
+		// Uhrzeit bestimmen
+		hh = (time/3600)%24;
+		mm = (time/60)%60;
+		ss = time%60;
+
+
 		//get new pulse time from eeprom
 		pulse_time = eeprom_read_byte(EEPROM_PULSE_TIME) << 8;
 		pulse_time |= eeprom_read_byte(EEPROM_PULSE_TIME+1);
@@ -188,7 +208,6 @@ void printIOsstruct(void) {//deprecated: done by initIOPort
 	unsigned char pin_num;
 	usart_write("PortCount:%i\r\n", GET_VIRT_PORT_COUNT(COUNT_IO_PINS));
 	for (pin_num = 0; pin_num < COUNT_IO_PINS; pin_num++) {
-
 		usart_write("VIO[0x%x]:", pin_num);
 		usart_write("pPort:0x%x", io_pins[pin_num/8].pins[pin_num%8].PPORT);
 		usart_write(";pDDR:0x%x", io_pins[pin_num/8].pins[pin_num%8].PDDR);
@@ -205,8 +224,7 @@ void getFuncCode(void) {
 		eeprom_address = EEPROM_FUNC_START + (pin_num * 2) + 1; /* calc position within eeprom */
 		eeprom_busy_wait();
 
-		io_pins[pin_num / 8].pins[pin_num % 8].function_code = eeprom_read_byte(
-						eeprom_address); /* read function code from eeprom */
+		io_pins[pin_num / 8].pins[pin_num % 8].function_code = eeprom_read_byte(eeprom_address); /* read function code from eeprom */
 
 		//check for uart pin
 		if(io_pins[pin_num / 8].pins[pin_num % 8].PPORT == uart_tx.PPORT
@@ -224,7 +242,6 @@ void getFuncCode(void) {
 void update_tx(void){
 	txbuffer[EEPROM_WRITE_ENABLE] = rxbuffer[EEPROM_WRITE_ENABLE];
 	txbuffer[EEPROM_WRITE_ENABLE+1] = rxbuffer[EEPROM_WRITE_ENABLE+1];
-
 }
 
 void handle_vio(void) {
@@ -250,8 +267,55 @@ void handle_vio(void) {
 			rxbuffer[IO_Port_address + 1] = 0x00; /* reset mask */
 		}
 
-		txbuffer[IO_Port_address] = readvirtIOport(&(io_pins[port_num]));
+		txbuffer[IO_Port_address] = readvirtIOport(&(io_pins[port_num]), port_num);
 		I2C_MAIN_DEBUG("%x_IO[0x%x]:0x%x\r\n",seqnr++, IO_Port_address,txbuffer[IO_Port_address]);
 	}
 	SREG = sreg_local;
 }
+
+
+#ifdef USE_OW
+void set1WirePin(struct IO_pin *vpin, uint8_t power_mode){
+#ifndef OW_ONE_BUS
+	ow_set_bus(vpin->PPIN, vpin->PPORT, vpin->PDDR, vpin->pin);
+#endif
+	DS18X20_start_meas( power_mode, NULL );
+}
+
+void read1WirePin(struct IO_pin *vpin, uint8_t port_num, uint8_t pin_num, uint8_t power_mode){
+
+	uint16_t result;
+	uint8_t subzero, cel, cel_frac_bits;
+	uint8_t *tempID = rxbuffer[VIRTUAL_DATA_START + (port_num * IOBOARD_MAX_IO_PINS) + pin_num];
+
+#ifndef OW_ONE_BUS
+	ow_set_bus(vpin->PPIN, vpin->PPORT, vpin->PDDR, vpin->pin);
+#endif
+
+	if ( ss%10 == 5 ) {
+		//I2C_MAIN_DEBUG("st OW\r\n");
+		DS18X20_start_meas( power_mode, NULL );
+	}
+
+	if (ss % 10 == 8) {
+
+		//I2C_MAIN_DEBUG("rd OW\r\n");
+
+		if (DS18X20_read_meas(tempID, &subzero, &cel, &cel_frac_bits) == DS18X20_OK) {
+
+			result = DS18X20_temp_to_decicel(subzero, cel, cel_frac_bits);
+
+			// Minuswerte:
+			if (subzero)
+				result *= (-1);
+
+			usart_write("T:%i\r\n", result);
+
+			txbuffer[VIRTUAL_DATA_START + (port_num * IOBOARD_MAX_IO_PINS) + pin_num] = result >> 8;
+			txbuffer[VIRTUAL_DATA_START + (port_num * IOBOARD_MAX_IO_PINS) + pin_num +1] = result & 0xFF;
+
+		} // -> if
+	}
+}
+
+#endif

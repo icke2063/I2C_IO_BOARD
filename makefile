@@ -85,7 +85,14 @@ OPT = s
 # Base
 LOCAL_SRC = 	base/src/slave_main.c
 #common_AVR
-LOCAL_SRC += 	common_AVR/src/IO_handling.c common_AVR/src/usart.c
+LOCAL_SRC += 	common_AVR/src/IO_handling.c common_AVR/src/usart.c common_AVR/src/timer.c
+
+#ONEWIRE
+ONEWIRE_DIR = common_AVR/external/1-wire
+LOCAL_SRC +=	${ONEWIRE_DIR}/crc8.c		\
+				${ONEWIRE_DIR}/delay.c		\
+				${ONEWIRE_DIR}/ds18x20.c	\
+				${ONEWIRE_DIR}/onewire.c
 
 # extra
 #TWI
@@ -112,6 +119,7 @@ ASRC =
 EXTRAINCDIRS =	base/config/ base/inc/ 			\
 				common_AVR/include/				\
 				common_AVR/config/				\
+				${ONEWIRE_DIR}/					\
 				$(BUILD_DIR)/git-version/		\
 				extra/TWI/inc/					\
 				extra/S0/inc/ extra/S0/config/
@@ -138,6 +146,7 @@ $(patsubst %,-I%,$(EXTRAINCDIRS))
 #CFLAGS += -std=gnu89
 #CFLAGS += -std=c99
 CFLAGS += -std=gnu99
+CFLAGS += -DF_CPU=1000000UL
 
 
 
@@ -350,6 +359,8 @@ copysrc: $(BUILD_DIR)
 	@mkdir -p $(BUILD_DIR)/common_AVR/
 	@cp -r common_AVR/include -t $(BUILD_DIR)/common_AVR/
 	@cp -r common_AVR/src -t $(BUILD_DIR)/common_AVR/
+	@cp -r common_AVR/external -t $(BUILD_DIR)/common_AVR/
+	
 	
 # Create final output files (.hex, .eep) from ELF output file.
 %.hex: %.elf
