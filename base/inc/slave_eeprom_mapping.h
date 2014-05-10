@@ -24,12 +24,12 @@
 #ifndef SLAVE_EEPROM_MAPPING_H_
 #define SLAVE_EEPROM_MAPPING_H_
 
+
 /// Slave Identification Number
 /**
  * This number is used by i2c master to identify this i2c slave as "i2c_io_board"
  */
 #define	SLAVE_ID	0x2A
-
 
 #define IOBOARD_MAX_IO_PINS	16
 /**
@@ -68,6 +68,8 @@
 #define VIRTUAL_IO_START	0x14
 
 #define VIRTUAL_DATA_START	0x20
+#define VIRTUAL_DATA_LENGTH	8
+
 
 #define EEPROM_WRITE_CODE	0x2F
 
@@ -78,20 +80,26 @@
  * - Byte 0		:	I2C ADDRESS		(ro)
  * - Byte 2		:	EEPROM_PULSE_TIME (rw)
  *
- * - Byte [32;35]		:	PORT0 IO0 data		(rw)			#EEPROM_DATA_START
+ * - Byte 0x10		:	Function Codes						#EEPROM_FUNC_START
+ *
+ * - Byte [0x50;0x5F]	:	PORT0 IO0 Name (rw)				#EEPROM_NAME_START
+ *
+ * - Byte [352;359]		:	PORT0 IO0 data		(rw)			#EEPROM_DATA_START
  * - ...
- * - Byte [60;63]		:	PORT0 IO7 data		(rw)
+ * - Byte [472;479]		:	PORT1 IO7 data		(rw)
  *
- * - Byte 0x70		:	Function Codes						#EEPROM_FUNC_START
  *
- * - Byte [0x101;0x10F]	:	PORT0 IO0 Name (rw)				#EEPROM_NAME_START
  */
 #define EEPROM_SIZE 			1024	//Größe des EEPROMS
 #define EEPROM_PULSE_TIME		0x02
-#define EEPROM_DATA_START		0x20
-#define EEPROM_FUNC_START		0x70
 
-#define EEPROM_NAME_START		0x100
+#define EEPROM_FUNC_START		0x10
+
+#define EEPROM_NAME_START		0x50
 #define IO_BOARD_MAX_IO_PIN_NAME_LENGTH	16
+
+#define EEPROM_DATA_START		0x160
+#define EEPROM_DATA_LENGTH		8
+
 
 #endif /* EEPROM_MAPPING_H_ */
