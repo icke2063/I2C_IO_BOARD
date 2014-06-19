@@ -67,10 +67,11 @@
 //common_AVR
 #include "IO_handling.h"
 
-#include "1-wire_config.h"
+
 #ifdef USE_OW
+	#include "1-wire_config.h"
 	#include <ds18x20.h>
-#include <onewire.h>
+	#include <onewire.h>
 #endif
 
 #include "git-version.h"
