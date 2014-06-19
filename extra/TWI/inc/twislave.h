@@ -43,8 +43,8 @@
 
 #include "usart.h"
 
-#define TWISLAVE_DEBUG usart_write
-//#define TWISLAVE_DEBUG(...)
+//#define TWISLAVE_DEBUG usart_write
+#define TWISLAVE_DEBUG(...)
 
 
 #include "slave_eeprom_mapping.h"
