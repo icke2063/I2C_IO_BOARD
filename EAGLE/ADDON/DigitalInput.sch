@@ -3631,7 +3631,7 @@ General Instrument, Semikron, Diotec, Fagor&lt;p&gt;
 <part name="B1" library="rectifier" deviceset="B-DIL" device=""/>
 <part name="R1" library="resistor" deviceset="R-EU_" device="0204/7"/>
 <part name="D2" library="diode" deviceset="BZV10" device=""/>
-<part name="R2" library="resistor" deviceset="R-EU_" device="0207/5V"/>
+<part name="R2" library="resistor" deviceset="R-EU_" device="0207/5V" value="10K"/>
 </parts>
 <sheets>
 <sheet>
