@@ -2,20 +2,14 @@
  * @file   default_viopin.h
  * @Author icke
  * @date   29.09.2013
- * @brief  Brief description of file.
+ * @brief  Default pin assignments -> all zero
  *
- * Detailed description of file.
  */
 
 #ifndef DEFAULT_VIOPIN_H_
 #define DEFAULT_VIOPIN_H_
 
 #include <stddef.h>
-
-/**
- * uart pin addressing
- */
-
 
 /**
  * create default defines for pin addressing
