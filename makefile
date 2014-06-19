@@ -147,6 +147,7 @@ $(patsubst %,-I%,$(EXTRAINCDIRS))
 #CFLAGS += -std=c99
 CFLAGS += -std=gnu99
 CFLAGS += -DF_CPU=1000000UL
+CFLAGS += -DUSE_OW=1
 
 
 
