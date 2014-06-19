@@ -243,8 +243,7 @@ void handle_vio(void) {
 
 		if (rxbuffer[IO_Port_address + 1]) {
 			I2C_MAIN_DEBUG("IO[0x%x]:0x%x:0x%x\r\n", IO_Port_address,rxbuffer[IO_Port_address],rxbuffer[IO_Port_address+1]);
-			handleIOport(&io_pins[port_num], rxbuffer[IO_Port_address],
-					rxbuffer[IO_Port_address + 1]);
+			handleIOport(&io_pins[port_num], rxbuffer[IO_Port_address], rxbuffer[IO_Port_address + 1]);
 			rxbuffer[IO_Port_address] = 0x00; /* reset vport */
 			rxbuffer[IO_Port_address + 1] = 0x00; /* reset mask */
 		}
