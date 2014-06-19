@@ -11,9 +11,8 @@
 #ifndef _GIT_VERSION_H_
 #define _GIT_VERSION_H_
 
-#define VINFO_COPYRIGHT_YEARS     "2013"
 #define VINFO_GITDESC             "@VERSION@"
 
-#define MAX_VERSION_LENGHT	10
+#define MAX_VERSION_LENGTH	10
 
 #endif  /* _GIT_VERSION_H_ */
