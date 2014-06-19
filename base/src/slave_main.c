@@ -148,7 +148,7 @@ int main(void) {
 	usart_write("Compiliert_mit_GCC_Version_"__VERSION__"\r\n");
 
 	init();
-	//printIOsstruct();
+	printIOsstruct();
 
 	while (1) {
 		// RoBue:
@@ -212,7 +212,8 @@ void printIOsstruct(void) {//deprecated: done by initIOPort
 		usart_write("pPort:0x%x", io_pins[pin_num/8].pins[pin_num%8].PPORT);
 		usart_write(";pDDR:0x%x", io_pins[pin_num/8].pins[pin_num%8].PDDR);
 		usart_write(";pPin:%i", io_pins[pin_num/8].pins[pin_num%8].PPIN);
-		usart_write(";pin:%i\r\n", io_pins[pin_num/8].pins[pin_num%8].pin);
+		usart_write(";pin:%i", io_pins[pin_num/8].pins[pin_num%8].pin);
+		usart_write(";func[0x%x]:%i\r\n",EEPROM_FUNC_START + (pin_num * 2) + 1, io_pins[pin_num/8].pins[pin_num%8].function_code);
 	}
 }
 
