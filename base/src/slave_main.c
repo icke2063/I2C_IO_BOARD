@@ -84,28 +84,6 @@ unsigned char hh;
 unsigned char mm;
 unsigned char ss;
 
-//Evaluation Board
-//struct virtual_IO_port io_pins[GET_VIRT_PORT_COUNT(COUNT_IO_PINS)] = {
-//		&PORTD,	&PIND, &DDRD, 5, 0, /* IO00 */
-//		&PORTD, &PIND, &DDRD, 6, 0, /* IO01 C3*/
-//		&PORTD, &PIND, &DDRD, 4, 0, /* IO02 */
-//		&PORTD, &PIND, &DDRD, 3, 0, /* IO03 */
-//		&PORTD, &PIND, &DDRD, 2, 0, /* IO04 */
-//		&PORTD, &PIND, &DDRD, 0, 0, /* IO05 */
-//
-//		&PORTD, &PIND, &DDRD, 0, 0, /* IO06 */
-//		&PORTD, &PIND, &DDRD, 0, 0, /* IO07 */
-//		&PORTD, &PIND, &DDRD, 0, 0, /* IO08 */
-//		&PORTD, &PIND, &DDRD, 0, 0, /* IO09 */
-//		&PORTD, &PIND, &DDRD, 0, 0, /* IO0A */
-//		&PORTD, &PIND, &DDRD, 0, 0, /* IO0B */
-//		0, 0, 0, 0, 0, /* IO0C */
-//		0, 0, 0, 0, 0, /* IO0D */
-//
-//		0, 0, 0, 0, 0, /* IO0E */
-//		0, 0, 0, 0, 0, /* IO0F */
-//};
-
 //configured port pins (by slave_config.h)
 struct virtual_IO_port io_pins[GET_VIRT_PORT_COUNT(COUNT_IO_PINS)] = {
 		VIO_PORT_0, VIO_PIN_0, VIO_DDR_0, VIO_PINNR_0, 0,
