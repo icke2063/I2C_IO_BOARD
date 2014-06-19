@@ -55,7 +55,7 @@
  *
  *
  * - Byte [32;35]		:	PORT0 IO0 data		(rw)	#VIRTUAL_DATA_START
- * - Byte [36;39]		:	PORT0 IO0 data		(rw)
+ * - Byte [36;39]		:	PORT0 IO1 data		(rw)
  * - ...
  * - Byte [60;63]		:	PORT0 IO7 data		(rw)
  */
@@ -70,8 +70,7 @@
 #define VIRTUAL_DATA_START	0x20
 #define VIRTUAL_DATA_LENGTH	8
 
-
-#define EEPROM_WRITE_CODE	0x2F
+#define EEPROM_WRITE_CODE	0x2F	//with this code eeprom write access can be enabled
 
 
 /**
