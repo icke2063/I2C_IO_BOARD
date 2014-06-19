@@ -24,8 +24,6 @@
 #ifndef SLAVE_MAIN_H_
 #define SLAVE_MAIN_H_
 
-#include <default_iopin.h>
-
 #include "usart.h"
 /**
  * debug macro

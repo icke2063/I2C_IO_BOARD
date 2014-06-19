@@ -61,6 +61,8 @@
 
 //icke2063
 #include <slave_main.h>
+
+#include <default_iopin.h>
 #include <slave_config.h>
 #include <slave_eeprom_mapping.h>
 
