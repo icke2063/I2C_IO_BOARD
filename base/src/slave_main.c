@@ -247,7 +247,7 @@ void handle_vio(void) {
 			rxbuffer[IO_Port_address + 1] = 0x00; /* reset mask */
 		}
 
-		txbuffer[IO_Port_address] = readvirtIOport(&(io_pins[port_num]), port_num);
+		txbuffer[IO_Port_address] = readvirtIOport(&(io_pins[port_num]));
 		I2C_MAIN_DEBUG("%x_IO[0x%x]:0x%x\r\n",seqnr++, IO_Port_address,txbuffer[IO_Port_address]);
 	}
 	SREG = sreg_local;
@@ -256,45 +256,99 @@ void handle_vio(void) {
 
 #ifdef USE_OW
 void set1WirePin(struct IO_pin *vpin, uint8_t power_mode){
+	uint8_t port_num = 0;
+	uint8_t pin_num = 0;
+	uint8_t eeprom_virt_data_addr = 0;
+
 #ifndef OW_ONE_BUS
+	//set current pin to current used 1 wire bus
 	ow_set_bus(vpin->PPIN, vpin->PPORT, vpin->PDDR, vpin->pin);
 #endif
+
+
+	for (uint8_t vpin_num = 0; vpin_num < COUNT_IO_PINS; vpin_num++) {
+		port_num = vpin_num/8;
+		pin_num = vpin_num%8;
+		eeprom_virt_data_addr = VIRTUAL_DATA_START + (port_num * (VIRTUAL_PORT_PINCOUNT * VIRTUAL_DATA_LENGTH)) + (pin_num * VIRTUAL_DATA_LENGTH);
+
+
+			if(&io_pins[port_num].pins[pin_num] == vpin){
+				I2C_MAIN_DEBUG("Found OW PIN[0x%x;0x%x]\r\n", port_num, pin_num);
+				//reset data
+				txbuffer[eeprom_virt_data_addr] = 0;
+				txbuffer[eeprom_virt_data_addr + 1] = 0xFF;
+				txbuffer[eeprom_virt_data_addr + 2] = 0;
+				txbuffer[eeprom_virt_data_addr + 3] = 0;
+
+				break;
+			}
+		}
+
 	DS18X20_start_meas( power_mode, NULL );
 }
 
-void read1WirePin(struct IO_pin *vpin, uint8_t port_num, uint8_t pin_num, uint8_t power_mode){
+void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
+	uint8_t port_num = 0;
+	uint8_t pin_num = 0;
+	uint8_t eeprom_virt_data_addr = 0;
+
 
 	uint16_t result;
 	uint8_t subzero, cel, cel_frac_bits;
-	uint8_t *tempID = rxbuffer[VIRTUAL_DATA_START + (port_num * IOBOARD_MAX_IO_PINS) + pin_num];
+	uint8_t *tempID = 0;
+
+
+
+	for (uint8_t vpin_num = 0; vpin_num < COUNT_IO_PINS; vpin_num++) {
+		port_num = vpin_num/8;
+		pin_num = vpin_num%8;
+		eeprom_virt_data_addr = VIRTUAL_DATA_START + (port_num * (VIRTUAL_PORT_PINCOUNT * VIRTUAL_DATA_LENGTH)) + (pin_num * VIRTUAL_DATA_LENGTH);
+
+
+		if(&io_pins[port_num].pins[pin_num] == vpin){//try to find virtual pin by given pointer
+			I2C_MAIN_DEBUG("Found OW PIN[0x%x;0x%x]\r\n", port_num, pin_num);
+
+			tempID = &rxbuffer[eeprom_virt_data_addr];	//get 1 wire rom code pointer
+
 
 #ifndef OW_ONE_BUS
-	ow_set_bus(vpin->PPIN, vpin->PPORT, vpin->PDDR, vpin->pin);
+			//set current pin to current used 1 wire bus
+			ow_set_bus(vpin->PPIN, vpin->PPORT, vpin->PDDR, vpin->pin);
 #endif
 
-	if ( ss%10 == 5 ) {
-		//I2C_MAIN_DEBUG("st OW\r\n");
-		DS18X20_start_meas( power_mode, NULL );
+			if ( ss%10 == 5 ) {
+				I2C_MAIN_DEBUG("st OW\r\n");
+				DS18X20_start_meas( power_mode, NULL );
+			}
+
+
+
+			if (ss % 10 == 8) {
+
+				I2C_MAIN_DEBUG("rd OW\r\n");
+				txbuffer[eeprom_virt_data_addr]++;	//raise seqnr
+
+				if (DS18X20_read_meas(tempID, &subzero, &cel, &cel_frac_bits) == DS18X20_OK) {
+
+					result = DS18X20_temp_to_decicel(subzero, cel, cel_frac_bits);
+
+					// Minuswerte:
+					if (subzero)
+						result *= (-1);
+
+					I2C_MAIN_DEBUG("T:%i\r\n", result);
+					txbuffer[eeprom_virt_data_addr + 1] = 0;	//set data ok
+
+					txbuffer[eeprom_virt_data_addr + 2] = result >> 8;		//high byte
+					txbuffer[eeprom_virt_data_addr + 3] = result & 0xFF;	//low byte
+
+
+				} else {
+					txbuffer[eeprom_virt_data_addr +1] = 0xAA;	//set data bad
+				}// -> if ok
+			break;
+		}
 	}
-
-	if (ss % 10 == 8) {
-
-		//I2C_MAIN_DEBUG("rd OW\r\n");
-
-		if (DS18X20_read_meas(tempID, &subzero, &cel, &cel_frac_bits) == DS18X20_OK) {
-
-			result = DS18X20_temp_to_decicel(subzero, cel, cel_frac_bits);
-
-			// Minuswerte:
-			if (subzero)
-				result *= (-1);
-
-			usart_write("T:%i\r\n", result);
-
-			txbuffer[VIRTUAL_DATA_START + (port_num * IOBOARD_MAX_IO_PINS) + pin_num] = result >> 8;
-			txbuffer[VIRTUAL_DATA_START + (port_num * IOBOARD_MAX_IO_PINS) + pin_num +1] = result & 0xFF;
-
-		} // -> if
 	}
 }
 
