@@ -29,8 +29,11 @@
  * debug macro
  * insert write function to get it work
  */
-#define I2C_MAIN_DEBUG	usart_write
-//define I2C_MAIN_DEBUG(...)
+//#define I2C_MAIN_DEBUG	usart_write
+#define I2C_MAIN_DEBUG(...)
+
+#define I2C_MAIN_INFO	usart_write
+//define I2C_MAIN_INFO(...)
 
 /**
  * init board

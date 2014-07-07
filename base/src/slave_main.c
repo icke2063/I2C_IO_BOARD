@@ -124,9 +124,9 @@ int main(void) {
 	 */
 	getFuncCode();
 
-	usart_write("\n\rSystem_Ready\n\r");
-	usart_write("Compiliert_am_"__DATE__"_um_"__TIME__"\r\n");
-	usart_write("Compiliert_mit_GCC_Version_"__VERSION__"\r\n");
+	I2C_MAIN_INFO("\n\rSystem_Ready\n\r");
+	I2C_MAIN_INFO("Compiliert_am_"__DATE__"_um_"__TIME__"\r\n");
+	I2C_MAIN_INFO("Compiliert_mit_GCC_Version_"__VERSION__"\r\n");
 
 	init();
 	printIOsstruct();
@@ -168,9 +168,8 @@ void init(void) {
 	/* copy git version into txbuffer */
 	strncpy(&txbuffer[VERSION_START], VINFO_GITDESC, VERSION_LENGTH);
 	txbuffer[VERSION_START + VERSION_LENGTH] = '\0';
-	usart_write("version[%i;%i]\r\n",
-			VERSION_START, VERSION_START+VERSION_LENGTH);
-	usart_write("version:%s\r\n", &txbuffer[VERSION_START]);
+	I2C_MAIN_INFO("version[%i;%i]\r\n", VERSION_START, VERSION_START+VERSION_LENGTH);
+	I2C_MAIN_INFO("version:%s\r\n", &txbuffer[VERSION_START]);
 
 	/* set IO Pin count */
 	txbuffer[VIRTUAL_IO_COUNT] = COUNT_IO_PINS;
@@ -180,21 +179,21 @@ void init(void) {
 	unsigned char I2C_addi = eeprom_read_byte(0);
 	I2C_addi = I2C_addi < 128 ? I2C_addi : 0x42;
 	init_twi_slave(I2C_addi); //TWI als Slave mit Adresse slaveadr starten
-	usart_write("I2C_address:0x%x\r\n", I2C_addi);
+	I2C_MAIN_INFO("I2C_address:0x%x\r\n", I2C_addi);
 
-	usart_write("init_done\r\n");
+	I2C_MAIN_INFO("init_done\r\n");
 }
 
 void printIOsstruct(void) {//deprecated: done by initIOPort
 	unsigned char pin_num;
-	usart_write("PortCount:%i\r\n", GET_VIRT_PORT_COUNT(COUNT_IO_PINS));
+	I2C_MAIN_INFO("PortCount:%i\r\n", GET_VIRT_PORT_COUNT(COUNT_IO_PINS));
 	for (pin_num = 0; pin_num < COUNT_IO_PINS; pin_num++) {
-		usart_write("VIO[0x%x]:", pin_num);
-		usart_write("pPort:0x%x", io_pins[pin_num/8].pins[pin_num%8].PPORT);
-		usart_write(";pDDR:0x%x", io_pins[pin_num/8].pins[pin_num%8].PDDR);
-		usart_write(";pPin:%i", io_pins[pin_num/8].pins[pin_num%8].PPIN);
-		usart_write(";pin:%i", io_pins[pin_num/8].pins[pin_num%8].pin);
-		usart_write(";func[0x%x]:%i\r\n",EEPROM_FUNC_START + (pin_num * 2) + 1, io_pins[pin_num/8].pins[pin_num%8].function_code);
+		I2C_MAIN_INFO("VIO[0x%x]:", pin_num);
+		I2C_MAIN_INFO("pPort:0x%x", io_pins[pin_num/8].pins[pin_num%8].PPORT);
+		I2C_MAIN_INFO(";pDDR:0x%x", io_pins[pin_num/8].pins[pin_num%8].PDDR);
+		I2C_MAIN_INFO(";pPin:%i", io_pins[pin_num/8].pins[pin_num%8].PPIN);
+		I2C_MAIN_INFO(";pin:%i", io_pins[pin_num/8].pins[pin_num%8].pin);
+		I2C_MAIN_INFO(";func[0x%x]:%i\r\n",EEPROM_FUNC_START + (pin_num * 2) + 1, io_pins[pin_num/8].pins[pin_num%8].function_code);
 	}
 }
 
