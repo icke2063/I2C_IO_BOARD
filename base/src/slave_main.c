@@ -61,16 +61,19 @@
 
 //icke2063
 #include <slave_main.h>
+
+#include <default_iopin.h>
 #include <slave_config.h>
 #include <slave_eeprom_mapping.h>
 
 //common_AVR
 #include "IO_handling.h"
 
-#include "1-wire_config.h"
+
 #ifdef USE_OW
+	#include "1-wire_config.h"
 	#include <ds18x20.h>
-#include <onewire.h>
+	#include <onewire.h>
 #endif
 
 #include "git-version.h"
@@ -80,28 +83,6 @@
 unsigned char hh;
 unsigned char mm;
 unsigned char ss;
-
-//Evaluation Board
-//struct virtual_IO_port io_pins[GET_VIRT_PORT_COUNT(COUNT_IO_PINS)] = {
-//		&PORTD,	&PIND, &DDRD, 5, 0, /* IO00 */
-//		&PORTD, &PIND, &DDRD, 6, 0, /* IO01 C3*/
-//		&PORTD, &PIND, &DDRD, 4, 0, /* IO02 */
-//		&PORTD, &PIND, &DDRD, 3, 0, /* IO03 */
-//		&PORTD, &PIND, &DDRD, 2, 0, /* IO04 */
-//		&PORTD, &PIND, &DDRD, 0, 0, /* IO05 */
-//
-//		&PORTD, &PIND, &DDRD, 0, 0, /* IO06 */
-//		&PORTD, &PIND, &DDRD, 0, 0, /* IO07 */
-//		&PORTD, &PIND, &DDRD, 0, 0, /* IO08 */
-//		&PORTD, &PIND, &DDRD, 0, 0, /* IO09 */
-//		&PORTD, &PIND, &DDRD, 0, 0, /* IO0A */
-//		&PORTD, &PIND, &DDRD, 0, 0, /* IO0B */
-//		0, 0, 0, 0, 0, /* IO0C */
-//		0, 0, 0, 0, 0, /* IO0D */
-//
-//		0, 0, 0, 0, 0, /* IO0E */
-//		0, 0, 0, 0, 0, /* IO0F */
-//};
 
 //configured port pins (by slave_config.h)
 struct virtual_IO_port io_pins[GET_VIRT_PORT_COUNT(COUNT_IO_PINS)] = {
@@ -148,7 +129,7 @@ int main(void) {
 	usart_write("Compiliert_mit_GCC_Version_"__VERSION__"\r\n");
 
 	init();
-	//printIOsstruct();
+	printIOsstruct();
 
 	while (1) {
 		// RoBue:
@@ -212,7 +193,8 @@ void printIOsstruct(void) {//deprecated: done by initIOPort
 		usart_write("pPort:0x%x", io_pins[pin_num/8].pins[pin_num%8].PPORT);
 		usart_write(";pDDR:0x%x", io_pins[pin_num/8].pins[pin_num%8].PDDR);
 		usart_write(";pPin:%i", io_pins[pin_num/8].pins[pin_num%8].PPIN);
-		usart_write(";pin:%i\r\n", io_pins[pin_num/8].pins[pin_num%8].pin);
+		usart_write(";pin:%i", io_pins[pin_num/8].pins[pin_num%8].pin);
+		usart_write(";func[0x%x]:%i\r\n",EEPROM_FUNC_START + (pin_num * 2) + 1, io_pins[pin_num/8].pins[pin_num%8].function_code);
 	}
 }
 
@@ -261,8 +243,7 @@ void handle_vio(void) {
 
 		if (rxbuffer[IO_Port_address + 1]) {
 			I2C_MAIN_DEBUG("IO[0x%x]:0x%x:0x%x\r\n", IO_Port_address,rxbuffer[IO_Port_address],rxbuffer[IO_Port_address+1]);
-			handleIOport(&io_pins[port_num], rxbuffer[IO_Port_address],
-					rxbuffer[IO_Port_address + 1]);
+			handleIOport(&io_pins[port_num], rxbuffer[IO_Port_address], rxbuffer[IO_Port_address + 1]);
 			rxbuffer[IO_Port_address] = 0x00; /* reset vport */
 			rxbuffer[IO_Port_address + 1] = 0x00; /* reset mask */
 		}

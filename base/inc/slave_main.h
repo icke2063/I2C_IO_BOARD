@@ -6,15 +6,15 @@
  @date:		03.10.2012
  Description:	main header file
 
- Dieses Programm ist freie Software. Sie k�nnen es unter den Bedingungen der
- GNU General Public License, wie von der Free Software Foundation ver�ffentlicht,
- weitergeben und/oder modifizieren, entweder gem�� Version 2 der Lizenz oder
- (nach Ihrer Option) jeder sp�teren Version.
+ Dieses Programm ist freie Software. Sie können es unter den Bedingungen der
+ GNU General Public License, wie von der Free Software Foundation veröffentlicht,
+ weitergeben und/oder modifizieren, entweder gemäß Version 2 der Lizenz oder
+ (nach Ihrer Option) jeder späteren Version.
 
- Die Ver�ffentlichung dieses Programms erfolgt in der Hoffnung,
- da� es Ihnen von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE,
+ Die Veröffentlichung dieses Programms erfolgt in der Hoffnung,
+ daß es Ihnen von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE,
  sogar ohne die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT
- F�R EINEN BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License.
+ FÜR EINEN BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License.
 
  Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
  Programm erhalten haben.
@@ -23,8 +23,6 @@
 ------------------------------------------------------------------------------*/
 #ifndef SLAVE_MAIN_H_
 #define SLAVE_MAIN_H_
-
-#include <default_iopin.h>
 
 #include "usart.h"
 /**
