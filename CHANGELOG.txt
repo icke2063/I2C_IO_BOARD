@@ -1,0 +1,40 @@
+v1.0.4
+------
+ * add 1-wire support
+ * update eagle files
+ * update commonAVR submodule
+ * add board specifig config files (create link during compile)
+ * use new commonAVR interface
+ * add 1-wire eeprom initialization
+
+v1.0.3
+------
+ * add pulse timeout
+ * add automatic uart disable
+ * add pin address information constants 
+    -> defined in config file
+    -> used in main struct initialization
+ * add mapping table file (ods)
+ * update mapping/doku/eagle
+ * add DigitalInput Board
+
+v1.0.2
+------
+ * add getFuncCode()
+ * add doxygen file
+ * add default virtual pin header file
+ * add eeprom write enable feature
+
+v1.0.1
+------
+ * update mapping
+ * change constant name BUFFER_SIZE -> I2C_BUFFER_SIZE
+ * add debug macros
+ * change incoming address byteorder to bigEndian
+ * add 8bit read support
+ * bugfix 1st eeprom byte access
+
+
+v1.0.0
+------
+
