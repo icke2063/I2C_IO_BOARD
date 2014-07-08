@@ -317,7 +317,7 @@ void set1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 	uint8_t port_num = 0;
 	uint8_t pin_num = 0;
-	uint8_t eeprom_virt_data_addr = 0;
+	uint8_t ram_virt_data_addr = 0;
 
 
 	uint16_t result;
@@ -329,13 +329,13 @@ void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 	for (uint8_t vpin_num = 0; vpin_num < COUNT_IO_PINS; vpin_num++) {
 		port_num = vpin_num/8;
 		pin_num = vpin_num%8;
-		eeprom_virt_data_addr = VIRTUAL_DATA_START + (port_num * (VIRTUAL_PORT_PINCOUNT * VIRTUAL_DATA_LENGTH)) + (pin_num * VIRTUAL_DATA_LENGTH);
+		ram_virt_data_addr = VIRTUAL_DATA_START + (port_num * (VIRTUAL_PORT_PINCOUNT * VIRTUAL_DATA_LENGTH)) + (pin_num * VIRTUAL_DATA_LENGTH);
 
 
 		if(&io_pins[port_num].pins[pin_num] == vpin){//try to find virtual pin by given pointer
 			I2C_MAIN_DEBUG("Found OW PIN[0x%x;0x%x]\r\n", port_num, pin_num);
 
-			tempID = &rxbuffer[eeprom_virt_data_addr];	//get 1 wire rom code pointer
+			tempID = &rxbuffer[ram_virt_data_addr];	//get 1 wire rom code pointer
 
 
 #ifndef OW_ONE_BUS
@@ -353,7 +353,7 @@ void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 			if (ss % 10 == 8) {
 
 				I2C_MAIN_DEBUG("rd OW\r\n");
-				txbuffer[eeprom_virt_data_addr]++;	//raise seqnr
+				txbuffer[ram_virt_data_addr]++;	//raise seqnr
 
 				if (DS18X20_read_meas(tempID, &subzero, &cel, &cel_frac_bits) == DS18X20_OK) {
 
@@ -364,14 +364,14 @@ void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 						result *= (-1);
 
 					I2C_MAIN_DEBUG("T:%i\r\n", result);
-					txbuffer[eeprom_virt_data_addr + 1] = 0;	//set data ok
+					txbuffer[ram_virt_data_addr + 1] = 0;	//set data ok
 
-					txbuffer[eeprom_virt_data_addr + 2] = result >> 8;		//high byte
-					txbuffer[eeprom_virt_data_addr + 3] = result & 0xFF;	//low byte
+					txbuffer[ram_virt_data_addr + 2] = result >> 8;		//high byte
+					txbuffer[ram_virt_data_addr + 3] = result & 0xFF;	//low byte
 
 
 				} else {
-					txbuffer[eeprom_virt_data_addr +1] = 0xAA;	//set data bad
+					txbuffer[ram_virt_data_addr +1] = 0xAA;	//set data bad
 				}// -> if ok
 			break;
 		}
