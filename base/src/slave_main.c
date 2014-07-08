@@ -154,11 +154,38 @@ int main(void) {
 
 void init(void) {
 	unsigned char port_num = 0;
+#ifdef USE_OW
+		uint16_t ram_virt_data_addr;
+		uint16_t eeprom_perm_data_addr;
+#endif
 
 	getFuncCode();	//read function codes from eeprom
-	for (port_num = 0; port_num < GET_VIRT_PORT_COUNT(COUNT_IO_PINS);
-			port_num++) {
+	for (port_num = 0; port_num < GET_VIRT_PORT_COUNT(COUNT_IO_PINS); port_num++) {
 		initIOport(&(io_pins[port_num]));	//first pin initialisation (all configured pins)
+
+		//applikation specific initialization
+		for (int pin = 0; pin < VIRTUAL_PORT_PINCOUNT; pin++) { /* loop over all virtual IO Pins */
+			switch (io_pins[port_num].pins[pin].function_code) {
+#ifdef USE_OW
+			case PIN_OW_POWER_PARASITE:
+			case PIN_OW_POWER_EXTERN:
+				{//copy rom codes from eeprom to ram
+					I2C_MAIN_INFO("1-wire[%i;%i]: OW code eeprom -> ram\r\n",port_num,pin);
+
+					ram_virt_data_addr = VIRTUAL_DATA_START + (port_num * (VIRTUAL_PORT_PINCOUNT * VIRTUAL_DATA_LENGTH)) + (pin * VIRTUAL_DATA_LENGTH);
+					eeprom_perm_data_addr = EEPROM_DATA_START + (port_num * (VIRTUAL_PORT_PINCOUNT * EEPROM_DATA_LENGTH)) + (pin * EEPROM_DATA_LENGTH);
+					I2C_MAIN_DEBUG("ram_virt_data_addr: 0x%x\r\n", ram_virt_data_addr);
+					I2C_MAIN_DEBUG("eeprom_perm_data_addr: 0x%x\r\n", eeprom_perm_data_addr);
+
+					eeprom_read_block (&rxbuffer[ram_virt_data_addr], eeprom_perm_data_addr, OW_ROMCODE_SIZE);
+				}
+
+				break;
+#endif
+			default:
+				break;
+			}
+		}
 	}
 
 	/* set Slave ID */
