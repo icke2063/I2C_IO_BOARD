@@ -24,7 +24,7 @@
 #ifndef _SLAVE_CONFIG_H_
 #define _SLAVE_CONFIG_H_
 
-#include <avr/iom8.h>
+#include <avr/io.h>
 #include <default_iopin.h>
 
 /// Slave Identification Number
