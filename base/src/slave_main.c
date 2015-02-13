@@ -283,7 +283,7 @@ void handle_vio(void) {
 
 #ifdef USE_OW
 void set1WirePin(struct IO_pin *vpin, uint8_t power_mode){
-	uint8_t port_num = 0;
+/*	uint8_t port_num = 0;
 	uint8_t pin_num = 0;
 	uint8_t eeprom_virt_data_addr = 0;
 
@@ -312,70 +312,90 @@ void set1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 		}
 
 	DS18X20_start_meas( power_mode, NULL );
+*/
 }
 
 void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 	uint8_t port_num = 0;
 	uint8_t pin_num = 0;
 	uint8_t ram_virt_data_addr = 0;
+	uint16_t eeprom_perm_data_addr = 0;
+	uint8_t eeprom_shared_data_offset = 0;
+	uint16_t eeprom_shared_data_addr = 0;
 
 
-	uint16_t result;
+
+	int16_t result;
+	int8_t temperature = 0xff;
 	uint8_t subzero, cel, cel_frac_bits;
-	uint8_t *tempID = 0;
+	uint8_t tempID[OW_ROMCODE_SIZE];
 
 
-
-	for (uint8_t vpin_num = 0; vpin_num < COUNT_IO_PINS; vpin_num++) {
+	for (uint8_t vpin_num = 0; vpin_num < COUNT_IO_PINS; vpin_num++)
+	{
 		port_num = vpin_num/8;
 		pin_num = vpin_num%8;
 		ram_virt_data_addr = VIRTUAL_DATA_START + (port_num * (VIRTUAL_PORT_PINCOUNT * VIRTUAL_DATA_LENGTH)) + (pin_num * VIRTUAL_DATA_LENGTH);
+		eeprom_perm_data_addr = EEPROM_DATA_START + (port_num * (VIRTUAL_PORT_PINCOUNT * EEPROM_DATA_LENGTH)) + (pin_num * EEPROM_DATA_LENGTH);
 
 
-		if(&io_pins[port_num].pins[pin_num] == vpin){//try to find virtual pin by given pointer
+		if(&io_pins[port_num].pins[pin_num] == vpin)/* try to find virtual pin by given pointer */
+		{
 			I2C_MAIN_DEBUG("Found OW PIN[0x%x;0x%x]\r\n", port_num, pin_num);
-
-			tempID = &rxbuffer[ram_virt_data_addr];	//get 1 wire rom code pointer
-
 
 #ifndef OW_ONE_BUS
 			//set current pin to current used 1 wire bus
 			ow_set_bus(vpin->PPIN, vpin->PPORT, vpin->PDDR, vpin->pin);
 #endif
 
-			if ( ss%10 == 5 ) {
+			if ( ss%10 == 0 ) {
 				I2C_MAIN_DEBUG("st OW\r\n");
 				DS18X20_start_meas( power_mode, NULL );
 			}
 
-
-
-			if (ss % 10 == 8) {
+			if (ss % 10 > 1)
+			{
 
 				I2C_MAIN_DEBUG("rd OW\r\n");
-				txbuffer[ram_virt_data_addr]++;	//raise seqnr
 
-				if (DS18X20_read_meas(tempID, &subzero, &cel, &cel_frac_bits) == DS18X20_OK) {
+				/* read ID from eeprom
+				 * - get shared eeprom memory offset
+				 * - check offset validity
+				 * - read ID into buffer
+				 */
+				eeprom_shared_data_offset = eeprom_read_byte(eeprom_perm_data_addr + (ss%8));
 
-					result = DS18X20_temp_to_decicel(subzero, cel, cel_frac_bits);
+				if(eeprom_shared_data_offset <= 0xF7)
+				{
 
-					// Minuswerte:
-					if (subzero)
-						result *= (-1);
+					eeprom_shared_data_addr = EEPROM_SHARED_DATA_START + (port_num * EEPROM_SHARED_DATA_LENGTH) + eeprom_shared_data_offset;
 
-					I2C_MAIN_DEBUG("T:%i\r\n", result);
-					txbuffer[ram_virt_data_addr + 1] = 0;	//set data ok
+					eeprom_read_block(tempID, eeprom_shared_data_addr + (ss%8), OW_ROMCODE_SIZE);
 
-					txbuffer[ram_virt_data_addr + 2] = result >> 8;		//high byte
-					txbuffer[ram_virt_data_addr + 3] = result & 0xFF;	//low byte
+					if (DS18X20_read_meas(tempID, &subzero, &cel, &cel_frac_bits) == DS18X20_OK) {
 
+						result = DS18X20_temp_to_decicel(subzero, cel, cel_frac_bits);
 
-				} else {
-					txbuffer[ram_virt_data_addr +1] = 0xAA;	//set data bad
-				}// -> if ok
-			break;
+						temperature = (result/10) & 0xff;
+
+						// Minuswerte:
+						if (subzero)
+						{
+							temperature *= (-1);
+						}
+
+						I2C_MAIN_DEBUG("T:%i\r\n", temperature);
+						txbuffer[ram_virt_data_addr + (ss%8)] = temperature;
+					} else {
+						txbuffer[ram_virt_data_addr + (ss%8)] = 0xFE;	//set data bad
+					}// -> if ok
+				}
+				else
+				{
+					txbuffer[ram_virt_data_addr + (ss%8)] = 0xFF;
+				}
+			}
 		}
-	}
 	}
 }
 

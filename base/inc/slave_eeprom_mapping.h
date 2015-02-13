@@ -54,8 +54,8 @@
  * - Byte 23		:	VIO_MASK1	(ro)
  *
  *
- * - Byte [32;35]		:	PORT0 IO0 data		(rw)	#VIRTUAL_DATA_START
- * - Byte [36;39]		:	PORT0 IO1 data		(rw)
+ * - Byte [32;39]		:	PORT0 IO0 data		(rw)	#VIRTUAL_DATA_START
+ * - Byte [40;47]		:	PORT0 IO1 data		(rw)
  * - ...
  * - Byte [60;63]		:	PORT0 IO7 data		(rw)
  */
@@ -100,5 +100,7 @@
 #define EEPROM_DATA_START		0x160
 #define EEPROM_DATA_LENGTH		8
 
+#define EEPROM_SHARED_DATA_START	0x200
+#define EEPROM_SHARED_DATA_LENGTH	0x100
 
 #endif /* EEPROM_MAPPING_H_ */
