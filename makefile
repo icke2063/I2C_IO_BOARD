@@ -41,6 +41,7 @@ MCU = atmega8
 #Fuse settings for ATmega8
 ifeq ($(MCU), atmega8)
 	FUSE_BITS = -u -U lfuse:w:0xe1:m -U hfuse:w:0xd1:m 
+	CPU_FREQ  = -DF_CPU=1000000UL
 	HEX_FILE_NAME = MEGA8
 endif
 
@@ -59,6 +60,7 @@ endif
 #Fuse settings for ATmega32
 ifeq ($(MCU), atmega32)
 	FUSE_BITS = -u -U lfuse:w:0xff:m -U hfuse:w:0xc7:m
+	CPU_FREQ  = -DF_CPU=16000000UL
 	HEX_FILE_NAME = MEGA32
 endif
 
@@ -89,7 +91,7 @@ LOCAL_SRC += 	common_AVR/src/IO_handling.c common_AVR/src/usart.c common_AVR/src
 
 #ONEWIRE
 ONEWIRE_DIR = common_AVR/external/1-wire
-LOCAL_SRC +=	${ONEWIRE_DIR}/crc8.c		\
+LOCAL_SRC +=			${ONEWIRE_DIR}/crc8.c		\
 				${ONEWIRE_DIR}/delay.c		\
 				${ONEWIRE_DIR}/ds18x20.c	\
 				${ONEWIRE_DIR}/onewire.c
@@ -146,7 +148,7 @@ $(patsubst %,-I%,$(EXTRAINCDIRS))
 #CFLAGS += -std=gnu89
 #CFLAGS += -std=c99
 CFLAGS += -std=gnu99
-CFLAGS += -DF_CPU=1000000UL
+CFLAGS += $(CPU_FREQ)
 CFLAGS += -DUSE_OW=1
 
 
@@ -288,6 +290,7 @@ ALL_ASFLAGS = -mmcu=$(MCU) -I. -x assembler-with-cpp $(ASFLAGS)
 
 
 # Default target.
+#all: begin gccversion sizebefore copysrc git-version $(TARGET).elf $(TARGET).hex $(TARGET).lss sizeafter finished end
 all: begin gccversion sizebefore copysrc git-version $(TARGET).elf $(TARGET).hex $(TARGET).lss sizeafter finished end
 
 
