@@ -165,24 +165,9 @@ void init(void) {
 
 		//applikation specific initialization
 		for (int pin = 0; pin < VIRTUAL_PORT_PINCOUNT; pin++) { /* loop over all virtual IO Pins */
-			switch (io_pins[port_num].pins[pin].function_code) {
-#ifdef USE_OW
-			case PIN_OW_POWER_PARASITE:
-			case PIN_OW_POWER_EXTERN:
-				{//copy rom codes from eeprom to ram
-					I2C_MAIN_INFO("1-wire[%i;%i]: OW code eeprom -> ram\r\n",port_num,pin);
-
-					ram_virt_data_addr = VIRTUAL_DATA_START + (port_num * (VIRTUAL_PORT_PINCOUNT * VIRTUAL_DATA_LENGTH)) + (pin * VIRTUAL_DATA_LENGTH);
-					eeprom_perm_data_addr = EEPROM_DATA_START + (port_num * (VIRTUAL_PORT_PINCOUNT * EEPROM_DATA_LENGTH)) + (pin * EEPROM_DATA_LENGTH);
-					I2C_MAIN_DEBUG("ram_virt_data_addr: 0x%x\r\n", ram_virt_data_addr);
-					I2C_MAIN_DEBUG("eeprom_perm_data_addr: 0x%x\r\n", eeprom_perm_data_addr);
-
-					eeprom_read_block (&rxbuffer[ram_virt_data_addr], eeprom_perm_data_addr, OW_ROMCODE_SIZE);
-				}
-
-				break;
-#endif
-			default:
+			switch (io_pins[port_num].pins[pin].function_code)
+			{
+				default:
 				break;
 			}
 		}
@@ -370,7 +355,8 @@ void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 
 					eeprom_shared_data_addr = EEPROM_SHARED_DATA_START + (port_num * EEPROM_SHARED_DATA_LENGTH) + eeprom_shared_data_offset;
 
-					eeprom_read_block(tempID, eeprom_shared_data_addr + (ss%8), OW_ROMCODE_SIZE);
+					eeprom_read_block(tempID, eeprom_shared_data_addr , OW_ROMCODE_SIZE);
+
 
 					if (DS18X20_read_meas(tempID, &subzero, &cel, &cel_frac_bits) == DS18X20_OK) {
 
@@ -387,12 +373,12 @@ void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 						I2C_MAIN_DEBUG("T:%i\r\n", temperature);
 						txbuffer[ram_virt_data_addr + (ss%8)] = temperature;
 					} else {
-						txbuffer[ram_virt_data_addr + (ss%8)] = 0xFE;	//set data bad
+						txbuffer[ram_virt_data_addr + (ss%8)] = 0x81;	//set data bad
 					}// -> if ok
 				}
 				else
 				{
-					txbuffer[ram_virt_data_addr + (ss%8)] = 0xFF;
+					txbuffer[ram_virt_data_addr + (ss%8)] = 0x80;
 				}
 			}
 		}
