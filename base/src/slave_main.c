@@ -180,7 +180,7 @@ void init(void) {
 	/* copy git version into txbuffer */
 	strncpy(&txbuffer[VERSION_START], VINFO_GITDESC, VERSION_LENGTH);
 	txbuffer[VERSION_START + VERSION_LENGTH] = '\0';
-	I2C_MAIN_INFO("version[%i;%i]\r\n", VERSION_START, VERSION_START+VERSION_LENGTH);
+	//I2C_MAIN_INFO("version[%i;%i]\r\n", VERSION_START, VERSION_START+VERSION_LENGTH);
 	I2C_MAIN_INFO("version:%s\r\n", &txbuffer[VERSION_START]);
 
 	/* set IO Pin count */
@@ -341,7 +341,7 @@ void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 			if (ss % 10 > 1)
 			{
 
-				I2C_MAIN_DEBUG("rd OW\r\n");
+				I2C_MAIN_DEBUG("rd OW[%i]\r\n",ss%8);
 
 				/* read ID from eeprom
 				 * - get shared eeprom memory offset
@@ -356,6 +356,17 @@ void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 					eeprom_shared_data_addr = EEPROM_SHARED_DATA_START + (port_num * EEPROM_SHARED_DATA_LENGTH) + eeprom_shared_data_offset;
 
 					eeprom_read_block(tempID, eeprom_shared_data_addr , OW_ROMCODE_SIZE);
+
+
+					I2C_MAIN_DEBUG("tempID0[%x]\r\n",tempID[0]);
+					I2C_MAIN_DEBUG("tempID1[%x]\r\n",tempID[1]);
+					I2C_MAIN_DEBUG("tempID2[%x]\r\n",tempID[2]);
+					I2C_MAIN_DEBUG("tempID3[%x]\r\n",tempID[3]);
+
+					I2C_MAIN_DEBUG("tempID4[%x]\r\n",tempID[4]);
+					I2C_MAIN_DEBUG("tempID5[%x]\r\n",tempID[5]);
+					I2C_MAIN_DEBUG("tempID6[%x]\r\n",tempID[6]);
+					I2C_MAIN_DEBUG("tempID7[%x]\r\n",tempID[7]);
 
 
 					if (DS18X20_read_meas(tempID, &subzero, &cel, &cel_frac_bits) == DS18X20_OK) {
