@@ -341,8 +341,6 @@ void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 			if (ss % 10 > 1)
 			{
 
-				I2C_MAIN_DEBUG("rd OW[%i]\r\n",ss%8);
-
 				/* read ID from eeprom
 				 * - get shared eeprom memory offset
 				 * - check offset validity
@@ -350,10 +348,15 @@ void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 				 */
 				eeprom_shared_data_offset = eeprom_read_byte(eeprom_perm_data_addr + (ss%8));
 
+				I2C_MAIN_DEBUG("rd OW[%i;%i;%i]\r\n",ss%8,eeprom_perm_data_addr + (ss%8), eeprom_shared_data_offset);
+
 				if(eeprom_shared_data_offset <= 0xF7)
 				{
 
 					eeprom_shared_data_addr = EEPROM_SHARED_DATA_START + (port_num * EEPROM_SHARED_DATA_LENGTH) + eeprom_shared_data_offset;
+
+					I2C_MAIN_DEBUG("Addr OW ID[%i]\r\n", eeprom_shared_data_addr);
+
 
 					eeprom_read_block(tempID, eeprom_shared_data_addr , OW_ROMCODE_SIZE);
 
