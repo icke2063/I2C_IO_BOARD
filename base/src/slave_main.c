@@ -261,39 +261,6 @@ void handle_vio(void) {
 
 
 #ifdef USE_OW
-void set1WirePin(struct IO_pin *vpin, uint8_t power_mode){
-/*	uint8_t port_num = 0;
-	uint8_t pin_num = 0;
-	uint8_t eeprom_virt_data_addr = 0;
-
-#ifndef OW_ONE_BUS
-	//set current pin to current used 1 wire bus
-	ow_set_bus(vpin->PPIN, vpin->PPORT, vpin->PDDR, vpin->pin);
-#endif
-
-
-	for (uint8_t vpin_num = 0; vpin_num < COUNT_IO_PINS; vpin_num++) {
-		port_num = vpin_num/8;
-		pin_num = vpin_num%8;
-		eeprom_virt_data_addr = VIRTUAL_DATA_START + (port_num * (VIRTUAL_PORT_PINCOUNT * VIRTUAL_DATA_LENGTH)) + (pin_num * VIRTUAL_DATA_LENGTH);
-
-
-			if(&io_pins[port_num].pins[pin_num] == vpin){
-				I2C_MAIN_DEBUG("Found OW PIN[0x%x;0x%x]\r\n", port_num, pin_num);
-				//reset data
-				txbuffer[eeprom_virt_data_addr] = 0;
-				txbuffer[eeprom_virt_data_addr + 1] = 0xFF;
-				txbuffer[eeprom_virt_data_addr + 2] = 0;
-				txbuffer[eeprom_virt_data_addr + 3] = 0;
-
-				break;
-			}
-		}
-
-	DS18X20_start_meas( power_mode, NULL );
-*/
-}
-
 void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 	uint8_t port_num = 0;
 	uint8_t pin_num = 0;
