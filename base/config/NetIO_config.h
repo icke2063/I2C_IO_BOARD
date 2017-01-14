@@ -55,7 +55,7 @@
 #undef UARTTX_PINNR
 	#define UARTTX_PINNR	PD1
 
-///PIN _0
+///VPIN_0	(Data2)
 #undef VIO_PORT_0
 	#define VIO_PORT_0	&PORTC
 #undef VIO_PIN_0
@@ -65,7 +65,7 @@
 #undef VIO_PINNR_0
 	#define VIO_PINNR_0	PC2
 
-///PIN _1
+///VPIN_1 (Data3)
 #undef VIO_PORT_1
 	#define VIO_PORT_1	&PORTC
 #undef VIO_PIN_1
@@ -75,7 +75,7 @@
 #undef VIO_PINNR_1
 	#define VIO_PINNR_1	PC3
 
-///PIN _2
+///VPIN_2 (Data4)
 #undef VIO_PORT_2
 	#define VIO_PORT_2	&PORTC
 #undef VIO_PIN_2
@@ -85,7 +85,7 @@
 #undef VIO_PINNR_2
 	#define VIO_PINNR_2	PC4
 
-///PIN _3
+///VPIN_3 (Data5)
 #undef VIO_PORT_3
 	#define VIO_PORT_3	&PORTC
 #undef VIO_PIN_3
@@ -95,7 +95,7 @@
 #undef VIO_PINNR_3
 	#define VIO_PINNR_3	PC5
 
-///PIN _4
+///VPIN_4 (Data6)
 #undef VIO_PORT_4
 	#define VIO_PORT_4	&PORTC
 #undef VIO_PIN_4
@@ -105,7 +105,7 @@
 #undef VIO_PINNR_4
 	#define VIO_PINNR_4	PC6
 
-///PIN _5
+///VPIN_5 (Data7)
 #undef VIO_PORT_5
 	#define VIO_PORT_5	&PORTC
 #undef VIO_PIN_5
@@ -115,27 +115,27 @@
 #undef VIO_PINNR_5
 	#define VIO_PINNR_5	PC7
 
-///PIN _6
+///VPIN_6
 #undef VIO_PORT_6
-	#define VIO_PORT_6	&PORTA
+	#define VIO_PORT_6	NULL
 #undef VIO_PIN_6
-	#define VIO_PIN_6	&PINA
+	#define VIO_PIN_6	NULL
 #undef VIO_DDR_6
-	#define VIO_DDR_6	&DDRA
+	#define VIO_DDR_6	NULL
 #undef VIO_PINNR_6
-	#define VIO_PINNR_6	PA3
+	#define VIO_PINNR_6	0
 
-///PIN _7
+///VPIN_7
 #undef VIO_PORT_7
-	#define VIO_PORT_7	&PORTA
+	#define VIO_PORT_7	NULL
 #undef VIO_PIN_7
-	#define VIO_PIN_7	&PINA
+	#define VIO_PIN_7	NULL
 #undef VIO_DDR_7
-	#define VIO_DDR_7	&DDRA
+	#define VIO_DDR_7	NULL
 #undef VIO_PINNR_7
-	#define VIO_PINNR_7	PA2
+	#define VIO_PINNR_7	0
 
-///PIN _8
+///VPIN_8 (Select)
 #undef VIO_PORT_8
 	#define VIO_PORT_8	&PORTA
 #undef VIO_PIN_8
@@ -143,9 +143,9 @@
 #undef VIO_DDR_8
 	#define VIO_DDR_8	&DDRA
 #undef VIO_PINNR_8
-	#define VIO_PINNR_8	PA1
+	#define VIO_PINNR_8	PA3
 
-///PIN _9
+///VPIN_9 (Paper Out)
 #undef VIO_PORT_9
 	#define VIO_PORT_9	&PORTA
 #undef VIO_PIN_9
@@ -153,66 +153,66 @@
 #undef VIO_DDR_9
 	#define VIO_DDR_9	&DDRA
 #undef VIO_PINNR_9
-	#define VIO_PINNR_9	PA0
+	#define VIO_PINNR_9	PA2
 
-///PIN _A
+///VPIN_A (Busy)
 #undef VIO_PORT_A
-	#define VIO_PORT_A	&PORTD
+	#define VIO_PORT_A	&PORTA
 #undef VIO_PIN_A
-	#define VIO_PIN_A	&PIND
+	#define VIO_PIN_A	&PINA
 #undef VIO_DDR_A
-	#define VIO_DDR_A	&DDRD
+	#define VIO_DDR_A	&DDRA
 #undef VIO_PINNR_A
-	#define VIO_PINNR_A	PD5
+	#define VIO_PINNR_A	PA1
 
-///PIN _B
+///VPIN_B (Ack)
 #undef VIO_PORT_B
-	#define VIO_PORT_B	&PORTD
+	#define VIO_PORT_B	&PORTA
 #undef VIO_PIN_B
-	#define VIO_PIN_B	&PIND
+	#define VIO_PIN_B	&PINA
 #undef VIO_DDR_B
-	#define VIO_DDR_B	&DDRD
+	#define VIO_DDR_B	&DDRA
 #undef VIO_PINNR_B
-	#define VIO_PINNR_B	PD6
+	#define VIO_PINNR_B	PA0
 
-///PIN _C
+///VPIN_C (ADC1)
 #undef VIO_PORT_C
-	#define VIO_PORT_C	&PORTC
+	#define VIO_PORT_C	&PORTA
 #undef VIO_PIN_C
-	#define VIO_PIN_C	&PINC
+	#define VIO_PIN_C	&PINA
 #undef VIO_DDR_C
-	#define VIO_DDR_C	&DDRC
+	#define VIO_DDR_C	&DDRA
 #undef VIO_PINNR_C
-	#define VIO_PINNR_C	PC0
+	#define VIO_PINNR_C	PA4
 
-///PIN _D
+///VPIN_D (ADC2)
 #undef VIO_PORT_D
-	#define VIO_PORT_D	&PORTC
+	#define VIO_PORT_D	&PORTA
 #undef VIO_PIN_D
-	#define VIO_PIN_D	&PINC
+	#define VIO_PIN_D	&PINA
 #undef VIO_DDR_D
-	#define VIO_DDR_D	&DDRC
+	#define VIO_DDR_D	&DDRA
 #undef VIO_PINNR_D
-	#define VIO_PINNR_D	PC1
+	#define VIO_PINNR_D	PA5
 
-///PIN _E
+///VPIN_E
 #undef VIO_PORT_E
-	#define VIO_PORT_E	&PORTC
+	#define VIO_PORT_E	&PORTA
 #undef VIO_PIN_E
-	#define VIO_PIN_E	&PINC
+	#define VIO_PIN_E	&PINA
 #undef VIO_DDR_E
-	#define VIO_DDR_E	&DDRC
+	#define VIO_DDR_E	&DDRA
 #undef VIO_PINNR_E
-	#define VIO_PINNR_E	PC2
+	#define VIO_PINNR_E	PA6
 
-///PIN _F
+///VPIN_F
 #undef VIO_PORT_F
-	#define VIO_PORT_F	&PORTC
+	#define VIO_PORT_F	&PORTA
 #undef VIO_PIN_F
-	#define VIO_PIN_F	&PINC
+	#define VIO_PIN_F	&PINA
 #undef VIO_DDR_F
-	#define VIO_DDR_F	&DDRC
+	#define VIO_DDR_F	&DDRA
 #undef VIO_PINNR_F
-	#define VIO_PINNR_F	PC3
+	#define VIO_PINNR_F	PA7
 
 #endif //_SLAVE_CONFIG_H

@@ -269,7 +269,8 @@ void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 	uint8_t eeprom_shared_data_offset = 0;
 	uint16_t eeprom_shared_data_addr = 0;
 	static uint8_t positions[COUNT_IO_PINS]={0,0,0,0,0,0,0,0};
-	uint8_t cur_pos=0;
+
+	uint8_t cur_pos=0;
 
 	int16_t result;
 	int8_t temperature = 0xff;
@@ -288,7 +289,8 @@ void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 		if(&io_pins[port_num].pins[pin_num] == vpin)/* try to find virtual pin by given pointer */
 		{
 			I2C_MAIN_DEBUG("Found OW PIN[0x%x;0x%x]@%i\r\n", port_num, pin_num,ss);
-			cur_pos = positions[vpin_num]%8;
+
+			cur_pos = positions[vpin_num]%8;
 #ifndef OW_ONE_BUS
 			//set current pin to current used 1 wire bus
 			ow_set_bus(vpin->PPIN, vpin->PPORT, vpin->PDDR, vpin->pin);
