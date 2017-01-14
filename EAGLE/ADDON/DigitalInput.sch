@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="6.5.0">
+<eagle version="6.6.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -3615,6 +3615,40 @@ General Instrument, Semikron, Diotec, Fagor&lt;p&gt;
 </deviceset>
 </devicesets>
 </library>
+<library name="supply1">
+<description>&lt;b&gt;Supply Symbols&lt;/b&gt;&lt;p&gt;
+ GND, VCC, 0V, +5V, -5V, etc.&lt;p&gt;
+ Please keep in mind, that these devices are necessary for the
+ automatic wiring of the supply signals.&lt;p&gt;
+ The pin name defined in the symbol is identical to the net which is to be wired automatically.&lt;p&gt;
+ In this library the device names are the same as the pin names of the symbols, therefore the correct signal names appear next to the supply symbols in the schematic.&lt;p&gt;
+ &lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
+<packages>
+</packages>
+<symbols>
+<symbol name="+5V">
+<wire x1="1.27" y1="-1.905" x2="0" y2="0" width="0.254" layer="94"/>
+<wire x1="0" y1="0" x2="-1.27" y2="-1.905" width="0.254" layer="94"/>
+<text x="-2.54" y="-5.08" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
+<pin name="+5V" x="0" y="-2.54" visible="off" length="short" direction="sup" rot="R90"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="+5V" prefix="P+">
+<description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
+<gates>
+<gate name="1" symbol="+5V" x="0" y="0"/>
+</gates>
+<devices>
+<device name="">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -3632,6 +3666,7 @@ General Instrument, Semikron, Diotec, Fagor&lt;p&gt;
 <part name="R1" library="resistor" deviceset="R-EU_" device="0204/7"/>
 <part name="D2" library="diode" deviceset="BZV10" device=""/>
 <part name="R2" library="resistor" deviceset="R-EU_" device="0207/5V" value="10K"/>
+<part name="P+1" library="supply1" deviceset="+5V" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -3645,6 +3680,7 @@ General Instrument, Semikron, Diotec, Fagor&lt;p&gt;
 <instance part="R1" gate="G$1" x="-27.94" y="88.9"/>
 <instance part="D2" gate="1" x="-43.18" y="86.36" rot="R90"/>
 <instance part="R2" gate="G$1" x="12.7" y="88.9" rot="R90"/>
+<instance part="P+1" gate="1" x="17.78" y="101.6"/>
 </instances>
 <busses>
 </busses>
@@ -3673,20 +3709,6 @@ General Instrument, Semikron, Diotec, Fagor&lt;p&gt;
 <pinref part="R1" gate="G$1" pin="1"/>
 <pinref part="D2" gate="1" pin="C"/>
 <junction x="-43.18" y="88.9"/>
-</segment>
-</net>
-<net name="N$1" class="0">
-<segment>
-<pinref part="OK2" gate="G$1" pin="VCC"/>
-<wire x1="2.54" y1="88.9" x2="7.62" y2="88.9" width="0.1524" layer="91"/>
-<wire x1="7.62" y1="88.9" x2="7.62" y2="93.98" width="0.1524" layer="91"/>
-<wire x1="7.62" y1="93.98" x2="12.7" y2="93.98" width="0.1524" layer="91"/>
-<wire x1="12.7" y1="93.98" x2="20.32" y2="93.98" width="0.1524" layer="91"/>
-<wire x1="20.32" y1="93.98" x2="20.32" y2="88.9" width="0.1524" layer="91"/>
-<pinref part="JP2" gate="A" pin="1"/>
-<wire x1="20.32" y1="88.9" x2="25.4" y2="88.9" width="0.1524" layer="91"/>
-<pinref part="R2" gate="G$1" pin="2"/>
-<junction x="12.7" y="93.98"/>
 </segment>
 </net>
 <net name="N$3" class="0">
@@ -3728,6 +3750,23 @@ General Instrument, Semikron, Diotec, Fagor&lt;p&gt;
 <segment>
 <pinref part="OK2" gate="G$1" pin="A"/>
 <pinref part="R1" gate="G$1" pin="2"/>
+</segment>
+</net>
+<net name="+5V" class="0">
+<segment>
+<pinref part="OK2" gate="G$1" pin="VCC"/>
+<wire x1="2.54" y1="88.9" x2="7.62" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="7.62" y1="88.9" x2="7.62" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="7.62" y1="93.98" x2="12.7" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="12.7" y1="93.98" x2="17.78" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="17.78" y1="93.98" x2="20.32" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="20.32" y1="93.98" x2="20.32" y2="88.9" width="0.1524" layer="91"/>
+<pinref part="JP2" gate="A" pin="1"/>
+<wire x1="20.32" y1="88.9" x2="25.4" y2="88.9" width="0.1524" layer="91"/>
+<pinref part="R2" gate="G$1" pin="2"/>
+<junction x="12.7" y="93.98"/>
+<pinref part="P+1" gate="1" pin="+5V"/>
+<wire x1="17.78" y1="93.98" x2="17.78" y2="99.06" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>

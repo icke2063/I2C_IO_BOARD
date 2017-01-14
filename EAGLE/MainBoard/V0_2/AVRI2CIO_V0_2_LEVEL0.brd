@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="6.5.0">
+<eagle version="6.6.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="2.54" unitdist="mm" unit="mm" style="dots" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="mm"/>
+<grid distance="2.54" unitdist="mm" unit="mm" style="dots" multiple="1" display="yes" altdistance="0.635" altunitdist="mm" altunit="mm"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
@@ -1283,42 +1283,6 @@
 </package>
 </packages>
 </library>
-<library name="con-wago-500">
-<description>&lt;b&gt;Wago Screw Clamps&lt;/b&gt;&lt;p&gt;
-Grid 5.00 mm&lt;p&gt;
-&lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
-<packages>
-<package name="W237-102">
-<description>&lt;b&gt;WAGO SCREW CLAMP&lt;/b&gt;</description>
-<wire x1="-3.491" y1="-2.286" x2="-1.484" y2="-0.279" width="0.254" layer="51"/>
-<wire x1="1.488" y1="-2.261" x2="3.469" y2="-0.254" width="0.254" layer="51"/>
-<wire x1="-4.989" y1="-5.461" x2="4.993" y2="-5.461" width="0.1524" layer="21"/>
-<wire x1="4.993" y1="3.734" x2="4.993" y2="3.531" width="0.1524" layer="21"/>
-<wire x1="4.993" y1="3.734" x2="-4.989" y2="3.734" width="0.1524" layer="21"/>
-<wire x1="-4.989" y1="-5.461" x2="-4.989" y2="-3.073" width="0.1524" layer="21"/>
-<wire x1="-4.989" y1="-3.073" x2="-3.389" y2="-3.073" width="0.1524" layer="21"/>
-<wire x1="-3.389" y1="-3.073" x2="-1.611" y2="-3.073" width="0.1524" layer="51"/>
-<wire x1="-1.611" y1="-3.073" x2="1.615" y2="-3.073" width="0.1524" layer="21"/>
-<wire x1="3.393" y1="-3.073" x2="4.993" y2="-3.073" width="0.1524" layer="21"/>
-<wire x1="-4.989" y1="-3.073" x2="-4.989" y2="3.531" width="0.1524" layer="21"/>
-<wire x1="4.993" y1="-3.073" x2="4.993" y2="-5.461" width="0.1524" layer="21"/>
-<wire x1="-4.989" y1="3.531" x2="4.993" y2="3.531" width="0.1524" layer="21"/>
-<wire x1="-4.989" y1="3.531" x2="-4.989" y2="3.734" width="0.1524" layer="21"/>
-<wire x1="4.993" y1="3.531" x2="4.993" y2="-3.073" width="0.1524" layer="21"/>
-<wire x1="1.615" y1="-3.073" x2="3.393" y2="-3.073" width="0.1524" layer="51"/>
-<circle x="-2.5" y="-1.27" radius="1.4986" width="0.1524" layer="51"/>
-<circle x="-2.5" y="2.2098" radius="0.508" width="0.1524" layer="21"/>
-<circle x="2.5038" y="-1.27" radius="1.4986" width="0.1524" layer="51"/>
-<circle x="2.5038" y="2.2098" radius="0.508" width="0.1524" layer="21"/>
-<pad name="1" x="-2.5" y="-1.27" drill="1.1938" shape="long" rot="R90"/>
-<pad name="2" x="2.5" y="-1.27" drill="1.1938" shape="long" rot="R90"/>
-<text x="-5.04" y="-7.62" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
-<text x="-3.8462" y="-5.0038" size="1.27" layer="25" ratio="10">&gt;NAME</text>
-<text x="-4.532" y="0.635" size="1.27" layer="21" ratio="10">1</text>
-<text x="0.421" y="0.635" size="1.27" layer="21" ratio="10">2</text>
-</package>
-</packages>
-</library>
 <library name="drilegend">
 <packages>
 <package name="DRILEGEND">
@@ -1406,6 +1370,42 @@ Grid 5.00 mm&lt;p&gt;
 <wire x1="42.926" y1="-8.763" x2="42.926" y2="2.921" width="0.2032" layer="144"/>
 <wire x1="42.926" y1="2.921" x2="0" y2="2.921" width="0.2032" layer="144"/>
 <wire x1="0" y1="2.921" x2="0" y2="-8.763" width="0.2032" layer="144"/>
+</package>
+</packages>
+</library>
+<library name="con-wago-508">
+<description>&lt;b&gt;Wago Screw Clamps&lt;/b&gt;&lt;p&gt;
+Grid 5.08 mm&lt;p&gt;
+&lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
+<packages>
+<package name="W237-132">
+<description>&lt;b&gt;WAGO SREW CLAMP&lt;/b&gt;</description>
+<wire x1="-3.5306" y1="-1.651" x2="-1.524" y2="0.3556" width="0.254" layer="51"/>
+<wire x1="1.6256" y1="-1.6764" x2="3.5306" y2="0.3556" width="0.254" layer="51"/>
+<wire x1="-5.08" y1="4.191" x2="5.08" y2="4.191" width="0.1524" layer="21"/>
+<wire x1="5.08" y1="-4.826" x2="5.08" y2="-2.413" width="0.1524" layer="21"/>
+<wire x1="5.08" y1="-4.826" x2="-5.08" y2="-4.826" width="0.1524" layer="21"/>
+<wire x1="-5.08" y1="4.191" x2="-5.08" y2="-2.413" width="0.1524" layer="21"/>
+<wire x1="-5.08" y1="-2.413" x2="-3.429" y2="-2.413" width="0.1524" layer="21"/>
+<wire x1="-3.429" y1="-2.413" x2="-1.651" y2="-2.413" width="0.1524" layer="51"/>
+<wire x1="-1.651" y1="-2.413" x2="1.651" y2="-2.413" width="0.1524" layer="21"/>
+<wire x1="3.429" y1="-2.413" x2="5.08" y2="-2.413" width="0.1524" layer="21"/>
+<wire x1="-5.08" y1="-2.413" x2="-5.08" y2="-4.826" width="0.1524" layer="21"/>
+<wire x1="5.08" y1="-2.413" x2="5.08" y2="4.191" width="0.1524" layer="21"/>
+<wire x1="-5.08" y1="4.191" x2="-5.08" y2="4.445" width="0.1524" layer="21"/>
+<wire x1="-5.08" y1="4.445" x2="5.08" y2="4.445" width="0.1524" layer="21"/>
+<wire x1="5.08" y1="4.191" x2="5.08" y2="4.445" width="0.1524" layer="21"/>
+<wire x1="1.651" y1="-2.413" x2="3.429" y2="-2.413" width="0.1524" layer="51"/>
+<circle x="-2.54" y="-0.635" radius="1.4986" width="0.1524" layer="51"/>
+<circle x="-2.54" y="2.8448" radius="0.508" width="0.1524" layer="21"/>
+<circle x="2.54" y="-0.635" radius="1.4986" width="0.1524" layer="51"/>
+<circle x="2.54" y="2.8448" radius="0.508" width="0.1524" layer="21"/>
+<pad name="1" x="-2.54" y="-0.635" drill="1.1938" shape="long" rot="R90"/>
+<pad name="2" x="2.54" y="-0.635" drill="1.1938" shape="long" rot="R90"/>
+<text x="-4.445" y="1.27" size="1.27" layer="51" ratio="10">1</text>
+<text x="0.6858" y="1.2192" size="1.27" layer="51" ratio="10">2</text>
+<text x="-3.81" y="-6.985" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
+<text x="-3.81" y="-4.318" size="1.27" layer="25" ratio="10">&gt;NAME</text>
 </package>
 </packages>
 </library>
@@ -1607,39 +1607,39 @@ design rules under a new name.</description>
 <element name="PH2_I" library="pinhead" package="1X05" value="" x="43.18" y="43.18" rot="R180"/>
 <element name="PH3_I" library="pinhead" package="1X05" value="" x="58.42" y="43.18" rot="R180"/>
 <element name="PH4_I" library="pinhead" package="1X05" value="" x="73.66" y="43.18" rot="R180"/>
-<element name="X3" library="con-wago-500" package="W237-102" value="" x="12.7" y="1.27" rot="R180">
-<attribute name="OC_NEWARK" value="70K9898" x="12.7" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="MPN" value="237-102" x="12.7" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
+<element name="X3" library="con-wago-508" package="W237-132" value="" x="12.7" y="1.27" rot="R180">
+<attribute name="OC_NEWARK" value="unknown" x="12.7" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="MPN" value="" x="12.7" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="MF" value="" x="12.7" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="12.7" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="X4" library="con-wago-500" package="W237-102" value="" x="27.94" y="1.27" rot="R180">
-<attribute name="OC_NEWARK" value="70K9898" x="27.94" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="MPN" value="237-102" x="27.94" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
+<element name="X4" library="con-wago-508" package="W237-132" value="" x="27.94" y="1.27" rot="R180">
+<attribute name="OC_NEWARK" value="unknown" x="27.94" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="MPN" value="" x="27.94" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="MF" value="" x="27.94" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="27.94" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="X5" library="con-wago-500" package="W237-102" value="" x="43.18" y="1.27" rot="R180">
-<attribute name="OC_NEWARK" value="70K9898" x="43.18" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="MPN" value="237-102" x="43.18" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
+<element name="X5" library="con-wago-508" package="W237-132" value="" x="43.18" y="1.27" rot="R180">
+<attribute name="OC_NEWARK" value="unknown" x="43.18" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="MPN" value="" x="43.18" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="MF" value="" x="43.18" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="43.18" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="X6" library="con-wago-500" package="W237-102" value="" x="55.88" y="1.27" rot="R180">
-<attribute name="OC_NEWARK" value="70K9898" x="55.88" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="MPN" value="237-102" x="55.88" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
+<element name="X6" library="con-wago-508" package="W237-132" value="" x="55.88" y="1.27" rot="R180">
+<attribute name="OC_NEWARK" value="unknown" x="55.88" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="MPN" value="" x="55.88" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="MF" value="" x="55.88" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="55.88" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="X7" library="con-wago-500" package="W237-102" value="" x="71.12" y="1.27" rot="R180">
-<attribute name="OC_NEWARK" value="70K9898" x="71.12" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="MPN" value="237-102" x="71.12" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
+<element name="X7" library="con-wago-508" package="W237-132" value="" x="71.12" y="1.27" rot="R180">
+<attribute name="OC_NEWARK" value="unknown" x="71.12" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="MPN" value="" x="71.12" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="MF" value="" x="71.12" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="71.12" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="X8" library="con-wago-500" package="W237-102" value="" x="86.36" y="1.27" rot="R180">
-<attribute name="OC_NEWARK" value="70K9898" x="86.36" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="MPN" value="237-102" x="86.36" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
+<element name="X8" library="con-wago-508" package="W237-132" value="" x="86.36" y="1.27" rot="R180">
+<attribute name="OC_NEWARK" value="unknown" x="86.36" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="MPN" value="" x="86.36" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="MF" value="" x="86.36" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="86.36" y="1.27" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
@@ -1684,40 +1684,40 @@ design rules under a new name.</description>
 <attribute name="NAME" x="85.0138" y="67.8688" size="1.27" layer="25" ratio="10"/>
 <attribute name="VALUE" x="85.09" y="67.945" size="1.27" layer="27"/>
 </element>
-<element name="X11" library="con-wago-500" package="W237-102" value="" x="27.94" y="77.47">
-<attribute name="OC_NEWARK" value="70K9898" x="27.94" y="77.47" size="1.778" layer="27" display="off"/>
-<attribute name="MPN" value="237-102" x="27.94" y="77.47" size="1.778" layer="27" display="off"/>
+<element name="X11" library="con-wago-508" package="W237-132" value="" x="27.94" y="77.47">
+<attribute name="OC_NEWARK" value="unknown" x="27.94" y="77.47" size="1.778" layer="27" display="off"/>
+<attribute name="MPN" value="" x="27.94" y="77.47" size="1.778" layer="27" display="off"/>
 <attribute name="MF" value="" x="27.94" y="77.47" size="1.778" layer="27" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="27.94" y="77.47" size="1.778" layer="27" display="off"/>
 </element>
-<element name="X12" library="con-wago-500" package="W237-102" value="" x="43.18" y="77.47">
-<attribute name="OC_NEWARK" value="70K9898" x="43.18" y="77.47" size="1.778" layer="27" display="off"/>
-<attribute name="MPN" value="237-102" x="43.18" y="77.47" size="1.778" layer="27" display="off"/>
+<element name="X12" library="con-wago-508" package="W237-132" value="" x="43.18" y="77.47">
+<attribute name="OC_NEWARK" value="unknown" x="43.18" y="77.47" size="1.778" layer="27" display="off"/>
+<attribute name="MPN" value="" x="43.18" y="77.47" size="1.778" layer="27" display="off"/>
 <attribute name="MF" value="" x="43.18" y="77.47" size="1.778" layer="27" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="43.18" y="77.47" size="1.778" layer="27" display="off"/>
 </element>
-<element name="X13" library="con-wago-500" package="W237-102" value="" x="58.42" y="77.47">
-<attribute name="OC_NEWARK" value="70K9898" x="58.42" y="77.47" size="1.778" layer="27" display="off"/>
-<attribute name="MPN" value="237-102" x="58.42" y="77.47" size="1.778" layer="27" display="off"/>
+<element name="X13" library="con-wago-508" package="W237-132" value="" x="58.42" y="77.47">
+<attribute name="OC_NEWARK" value="unknown" x="58.42" y="77.47" size="1.778" layer="27" display="off"/>
+<attribute name="MPN" value="" x="58.42" y="77.47" size="1.778" layer="27" display="off"/>
 <attribute name="MF" value="" x="58.42" y="77.47" size="1.778" layer="27" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="58.42" y="77.47" size="1.778" layer="27" display="off"/>
 </element>
-<element name="X14" library="con-wago-500" package="W237-102" value="" x="73.66" y="77.47">
-<attribute name="OC_NEWARK" value="70K9898" x="73.66" y="77.47" size="1.778" layer="27" display="off"/>
-<attribute name="MPN" value="237-102" x="73.66" y="77.47" size="1.778" layer="27" display="off"/>
+<element name="X14" library="con-wago-508" package="W237-132" value="" x="73.66" y="77.47">
+<attribute name="OC_NEWARK" value="unknown" x="73.66" y="77.47" size="1.778" layer="27" display="off"/>
+<attribute name="MPN" value="" x="73.66" y="77.47" size="1.778" layer="27" display="off"/>
 <attribute name="MF" value="" x="73.66" y="77.47" size="1.778" layer="27" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="73.66" y="77.47" size="1.778" layer="27" display="off"/>
 </element>
-<element name="X15" library="con-wago-500" package="W237-102" value="" x="88.9" y="77.47">
-<attribute name="OC_NEWARK" value="70K9898" x="88.9" y="77.47" size="1.778" layer="27" display="off"/>
-<attribute name="MPN" value="237-102" x="88.9" y="77.47" size="1.778" layer="27" display="off"/>
+<element name="X15" library="con-wago-508" package="W237-132" value="" x="88.9" y="77.47">
+<attribute name="OC_NEWARK" value="unknown" x="88.9" y="77.47" size="1.778" layer="27" display="off"/>
+<attribute name="MPN" value="" x="88.9" y="77.47" size="1.778" layer="27" display="off"/>
 <attribute name="MF" value="" x="88.9" y="77.47" size="1.778" layer="27" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="88.9" y="77.47" size="1.778" layer="27" display="off"/>
 </element>
 <element name="PH0_E" library="pinhead" package="1X03" value="" x="12.7" y="71.12"/>
-<element name="X10" library="con-wago-500" package="W237-102" value="" x="12.7" y="77.47">
-<attribute name="OC_NEWARK" value="70K9898" x="12.7" y="77.47" size="1.778" layer="27" display="off"/>
-<attribute name="MPN" value="237-102" x="12.7" y="77.47" size="1.778" layer="27" display="off"/>
+<element name="X10" library="con-wago-508" package="W237-132" value="" x="12.7" y="77.47">
+<attribute name="OC_NEWARK" value="unknown" x="12.7" y="77.47" size="1.778" layer="27" display="off"/>
+<attribute name="MPN" value="" x="12.7" y="77.47" size="1.778" layer="27" display="off"/>
 <attribute name="MF" value="" x="12.7" y="77.47" size="1.778" layer="27" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="12.7" y="77.47" size="1.778" layer="27" display="off"/>
 </element>
@@ -1891,114 +1891,114 @@ design rules under a new name.</description>
 <signal name="N$3">
 <contactref element="PH6_E" pad="3"/>
 <contactref element="X3" pad="2"/>
-<wire x1="10.2" y1="2.54" x2="10.16" y2="7.62" width="0.4064" layer="16"/>
+<wire x1="10.16" y1="1.905" x2="10.16" y2="7.62" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$4">
 <contactref element="PH6_E" pad="1"/>
 <contactref element="X3" pad="1"/>
-<wire x1="15.24" y1="7.62" x2="15.2" y2="2.54" width="0.4064" layer="16"/>
+<wire x1="15.24" y1="7.62" x2="15.24" y2="1.905" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$5">
 <contactref element="PH7_E" pad="3"/>
 <contactref element="X4" pad="2"/>
-<wire x1="25.44" y1="2.54" x2="25.4" y2="7.62" width="0.4064" layer="16"/>
+<wire x1="25.4" y1="1.905" x2="25.4" y2="7.62" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$6">
 <contactref element="PH7_E" pad="1"/>
 <contactref element="X4" pad="1"/>
-<wire x1="30.44" y1="2.54" x2="30.48" y2="7.62" width="0.4064" layer="16"/>
+<wire x1="30.48" y1="1.905" x2="30.48" y2="7.62" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$7">
 <contactref element="PH8_E" pad="3"/>
 <contactref element="X5" pad="2"/>
-<wire x1="40.68" y1="2.54" x2="40.64" y2="7.62" width="0.4064" layer="16"/>
+<wire x1="40.64" y1="1.905" x2="40.64" y2="7.62" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$8">
 <contactref element="PH8_E" pad="1"/>
 <contactref element="X5" pad="1"/>
-<wire x1="45.68" y1="2.54" x2="45.72" y2="7.62" width="0.4064" layer="16"/>
+<wire x1="45.72" y1="1.905" x2="45.72" y2="7.62" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$9">
 <contactref element="PH9_E" pad="3"/>
 <contactref element="X6" pad="2"/>
-<wire x1="53.38" y1="2.54" x2="55.88" y2="7.62" width="0.4064" layer="16"/>
+<wire x1="53.34" y1="1.905" x2="55.88" y2="7.62" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$10">
 <contactref element="PH9_E" pad="1"/>
 <contactref element="X6" pad="1"/>
-<wire x1="58.38" y1="2.54" x2="60.96" y2="7.62" width="0.4064" layer="16"/>
+<wire x1="58.42" y1="1.905" x2="60.96" y2="7.62" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$11">
 <contactref element="PH10_E" pad="3"/>
 <contactref element="X7" pad="2"/>
-<wire x1="68.62" y1="2.54" x2="71.12" y2="7.62" width="0.4064" layer="16"/>
+<wire x1="68.58" y1="1.905" x2="71.12" y2="7.62" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$12">
 <contactref element="PH10_E" pad="1"/>
 <contactref element="X7" pad="1"/>
-<wire x1="73.62" y1="2.54" x2="76.2" y2="7.62" width="0.4064" layer="16"/>
+<wire x1="73.66" y1="1.905" x2="76.2" y2="7.62" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$13">
 <contactref element="PH11_E" pad="3"/>
 <contactref element="X8" pad="2"/>
-<wire x1="83.86" y1="2.54" x2="86.36" y2="7.62" width="0.4064" layer="16"/>
+<wire x1="83.82" y1="1.905" x2="86.36" y2="7.62" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$14">
 <contactref element="PH11_E" pad="1"/>
 <contactref element="X8" pad="1"/>
-<wire x1="88.86" y1="2.54" x2="91.44" y2="7.62" width="0.4064" layer="16"/>
+<wire x1="88.9" y1="1.905" x2="91.44" y2="7.62" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$19">
 <contactref element="X11" pad="1"/>
 <contactref element="PH1_E" pad="1"/>
-<wire x1="25.4" y1="71.12" x2="25.44" y2="76.2" width="0.4064" layer="16"/>
+<wire x1="25.4" y1="71.12" x2="25.4" y2="76.835" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$20">
 <contactref element="X11" pad="2"/>
 <contactref element="PH1_E" pad="3"/>
-<wire x1="30.48" y1="71.12" x2="30.44" y2="76.2" width="0.4064" layer="16"/>
+<wire x1="30.48" y1="71.12" x2="30.48" y2="76.835" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$23">
 <contactref element="X12" pad="1"/>
 <contactref element="PH2_E" pad="1"/>
-<wire x1="40.64" y1="71.12" x2="40.68" y2="76.2" width="0.4064" layer="16"/>
+<wire x1="40.64" y1="71.12" x2="40.64" y2="76.835" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$24">
 <contactref element="X12" pad="2"/>
 <contactref element="PH2_E" pad="3"/>
 <wire x1="45.72" y1="71.12" x2="45.72" y2="76.2" width="0.4064" layer="16"/>
-<wire x1="45.72" y1="76.2" x2="45.68" y2="76.2" width="0" layer="19" extent="1-16"/>
+<wire x1="45.72" y1="76.2" x2="45.72" y2="76.835" width="0" layer="19" extent="1-16"/>
 </signal>
 <signal name="N$25">
 <contactref element="X13" pad="1"/>
 <contactref element="PH3_E" pad="1"/>
-<wire x1="55.88" y1="71.12" x2="55.92" y2="76.2" width="0.4064" layer="16"/>
+<wire x1="55.88" y1="71.12" x2="55.88" y2="76.835" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$26">
 <contactref element="X13" pad="2"/>
 <contactref element="PH3_E" pad="3"/>
-<wire x1="60.96" y1="71.12" x2="60.92" y2="76.2" width="0.4064" layer="16"/>
+<wire x1="60.96" y1="71.12" x2="60.96" y2="76.835" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$27">
 <contactref element="X14" pad="1"/>
 <contactref element="PH4_E" pad="1"/>
 <wire x1="71.12" y1="71.12" x2="71.12" y2="76.2" width="0.4064" layer="16"/>
-<wire x1="71.12" y1="76.2" x2="71.16" y2="76.2" width="0.4064" layer="16"/>
+<wire x1="71.12" y1="76.2" x2="71.12" y2="76.835" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$28">
 <contactref element="X14" pad="2"/>
 <contactref element="PH4_E" pad="3"/>
-<wire x1="76.2" y1="71.12" x2="76.16" y2="76.2" width="0.4064" layer="16"/>
+<wire x1="76.2" y1="71.12" x2="76.2" y2="76.835" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$29">
 <contactref element="X15" pad="1"/>
 <contactref element="PH5_E" pad="1"/>
-<wire x1="86.36" y1="71.12" x2="86.4" y2="76.2" width="0.4064" layer="16"/>
+<wire x1="86.36" y1="71.12" x2="86.36" y2="76.835" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$30">
 <contactref element="X15" pad="2"/>
 <contactref element="PH5_E" pad="3"/>
-<wire x1="91.44" y1="71.12" x2="91.4" y2="76.2" width="0.4064" layer="16"/>
+<wire x1="91.44" y1="71.12" x2="91.44" y2="76.835" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$33">
 </signal>
@@ -2042,12 +2042,12 @@ design rules under a new name.</description>
 <contactref element="PH0_E" pad="3"/>
 <contactref element="X10" pad="2"/>
 <wire x1="15.24" y1="71.12" x2="15.24" y2="76.2" width="0.4064" layer="16"/>
-<wire x1="15.24" y1="76.2" x2="15.2" y2="76.2" width="0" layer="19" extent="1-16"/>
+<wire x1="15.24" y1="76.2" x2="15.24" y2="76.835" width="0" layer="19" extent="1-16"/>
 </signal>
 <signal name="N$2">
 <contactref element="X10" pad="1"/>
 <contactref element="PH0_E" pad="1"/>
-<wire x1="10.16" y1="71.12" x2="10.2" y2="76.2" width="0.4064" layer="16"/>
+<wire x1="10.16" y1="71.12" x2="10.16" y2="76.835" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$15">
 </signal>
@@ -2150,6 +2150,12 @@ design rules under a new name.</description>
 <wire x1="96.52" y1="25.4" x2="43.18" y2="25.4" width="0.4064" layer="16"/>
 <contactref element="PH8_I" pad="3"/>
 <wire x1="43.18" y1="25.4" x2="43.18" y2="35.56" width="0.4064" layer="16"/>
+</signal>
+<signal name="N$37">
+<via x="20.32" y="76.2" extent="1-16" drill="1.5"/>
+</signal>
+<signal name="N$70">
+<via x="35.56" y="76.2" extent="1-16" drill="1.5"/>
 </signal>
 </signals>
 </board>
