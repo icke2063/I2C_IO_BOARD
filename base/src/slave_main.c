@@ -155,12 +155,15 @@ int main(void) {
 void init(void) {
 	unsigned char port_num = 0;
 	getFuncCode();	//read function codes from eeprom
-	for (port_num = 0; port_num < GET_VIRT_PORT_COUNT(COUNT_IO_PINS); port_num++) {
-		initIOport(&(io_pins[port_num]));	//first pin initialisation (all configured pins)
+	for (port_num = 0; port_num < GET_VIRT_PORT_COUNT(COUNT_IO_PINS); port_num++)
+	{
+		initIOport(&(io_pins[port_num]));	//first pin initialization (all configured pins)
 
-		//applikation specific initialization
-		for (int pin = 0; pin < VIRTUAL_PORT_PINCOUNT; pin++) { /* loop over all virtual IO Pins */
-			switch (io_pins[port_num].pins[pin].function_code) {
+		//application specific initialization
+		for (int pin = 0; pin < VIRTUAL_PORT_PINCOUNT; pin++)
+		{ /* loop over all virtual IO Pins */
+			switch (io_pins[port_num].pins[pin].function_code)
+			{
 			default:
 				break;
 			}
@@ -261,16 +264,21 @@ void handle_vio(void) {
 
 
 #ifdef USE_OW
-void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
+void read1WirePin(const struct IO_pin *vpin, uint8_t power_mode){
 	uint8_t port_num = 0;
 	uint8_t pin_num = 0;
-	uint8_t ram_virt_data_addr = 0;
+	uint8_t ram_virt_data_addr = 0;			/* position of temperature value in RAM */
 	uint16_t eeprom_perm_data_addr = 0;
-	uint8_t eeprom_shared_data_offset = 0;
-	uint16_t eeprom_shared_data_addr = 0;
-	static uint8_t positions[COUNT_IO_PINS]={0,0,0,0,0,0,0,0};
+	uint8_t eeprom_shared_data_offset = 0;	/* offsets of ROM code in shared memory area */
+	uint16_t eeprom_shared_data_addr = 0;	/* position of ROM code in shared memory */
 
-	uint8_t cur_pos=0;
+	/* each vio pin can handle up to eight 1-wire sensor values
+	 * - store the current handled position in this array
+	 * - single andling of each position
+	 */
+	static uint8_t positions[COUNT_IO_PINS]={0,0,0,0,0,0,0,0};	/* action position of cur vio pin */
+
+	uint8_t cur_pos = 0;
 
 	int16_t result;
 	int8_t temperature = 0xff;
@@ -296,7 +304,10 @@ void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 			ow_set_bus(vpin->PPIN, vpin->PPORT, vpin->PDDR, vpin->pin);
 #endif
 
-			if ( ss%10 == 3 ) {
+			/** 1-wire handling controlled by timeslots */
+			if ( ss%10 == 3 )
+			{/** start all sensors on this pin with measuring temperature */
+
 				I2C_MAIN_DEBUG("st OW\r\n");
 				DS18X20_start_meas( power_mode, NULL );
 			}
@@ -315,8 +326,8 @@ void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 				    eeprom_shared_data_offset = eeprom_read_byte(eeprom_perm_data_addr + cur_pos);
 				    if(eeprom_shared_data_offset > 0xF7)
 				    {//offset not valid try next one
-					txbuffer[ram_virt_data_addr + cur_pos] = 0xFF;
-					cur_pos++;
+				    	txbuffer[ram_virt_data_addr + cur_pos] = 0xFF;
+				    	cur_pos++;
 				    }
 
 				} while(eeprom_shared_data_offset > 0xF7 && cur_pos < 8);
@@ -327,11 +338,12 @@ void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 
 					I2C_MAIN_DEBUG("shared offset: 0x%x\r\n", eeprom_shared_data_offset);
 
+					/** calculate eeprom shared data address of OW ID */
 					eeprom_shared_data_addr = EEPROM_SHARED_DATA_START + (port_num * EEPROM_SHARED_DATA_LENGTH) + eeprom_shared_data_offset;
 
 					I2C_MAIN_DEBUG("eeprom_shared_data_addr: 0x%x\r\n", eeprom_shared_data_addr);
 
-
+					/** get ROM ID code */
 					eeprom_read_block(tempID, eeprom_shared_data_addr, OW_ROMCODE_SIZE);
 
 					I2C_MAIN_DEBUG("0x%x:0x%x:0x%x:0x%x::0x%x:0x%x:0x%x:0x%x\r\n",
@@ -344,6 +356,7 @@ void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 						    ,tempID[6]
 						    ,tempID[7]);
 
+					/** get measurement of current position */
 					if (DS18X20_read_meas(tempID, &subzero, &cel, &cel_frac_bits) == DS18X20_OK) {
 
 						result = DS18X20_temp_to_decicel(subzero, cel, cel_frac_bits);
@@ -353,11 +366,11 @@ void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 						// Minuswerte:
 						if (subzero)
 						{
-							temperature *= (-1);
+							temperature *= (-1);	// temperature is a signed value :)
 						}
 
 						I2C_MAIN_DEBUG("T:%i\r\n", temperature);
-						txbuffer[ram_virt_data_addr + cur_pos] = temperature;
+						txbuffer[ram_virt_data_addr + cur_pos] = temperature;	//set value in RAM
 					} else {
 						txbuffer[ram_virt_data_addr + cur_pos] = 0xFE;	//set data bad
 					}// -> if ok
@@ -365,7 +378,7 @@ void read1WirePin(struct IO_pin *vpin, uint8_t power_mode){
 					cur_pos++;
 				}
 			}
-			positions[vpin_num] = cur_pos;
+			positions[vpin_num] = cur_pos;	//store next position in array
 		}
 	}
 }
