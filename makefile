@@ -101,7 +101,7 @@ LOCAL_SRC +=			${ONEWIRE_DIR}/crc8.c		\
 LOCAL_SRC += 	extra/TWI/src/twislave.c
 
 #S0
-LOCAL_SRC += 	extra/S0/src/S0.c
+#LOCAL_SRC += 	extra/S0/src/S0.c
 
 SRC = $(addprefix $(BUILD_DIR)/,$(LOCAL_SRC))
 
