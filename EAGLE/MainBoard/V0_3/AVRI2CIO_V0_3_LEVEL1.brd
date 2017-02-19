@@ -37,9 +37,9 @@
 <layer number="41" name="tRestrict" color="4" fill="10" visible="yes" active="yes"/>
 <layer number="42" name="bRestrict" color="1" fill="10" visible="yes" active="yes"/>
 <layer number="43" name="vRestrict" color="2" fill="10" visible="yes" active="yes"/>
-<layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
-<layer number="45" name="Holes" color="7" fill="1" visible="no" active="yes"/>
-<layer number="46" name="Milling" color="3" fill="1" visible="no" active="yes"/>
+<layer number="44" name="Drills" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="45" name="Holes" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="46" name="Milling" color="3" fill="1" visible="yes" active="yes"/>
 <layer number="47" name="Measures" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="48" name="Document" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="49" name="Reference" color="7" fill="1" visible="yes" active="yes"/>
@@ -852,6 +852,55 @@ design rules under a new name.</description>
 </polygon>
 </signal>
 </signals>
+<errors>
+<approved hash="2,20,10a43d5801f32c0f"/>
+<approved hash="3,16,d866b2594cd526ea"/>
+<approved hash="6,16,e5242b3227bee9a8"/>
+<approved hash="6,16,03a7ffcaef807d31"/>
+<approved hash="6,16,7ce0cd1cca047bf8"/>
+<approved hash="6,16,bb3f0fcb0eedba19"/>
+<approved hash="6,16,65386b2e67a069b6"/>
+<approved hash="6,16,d73f87cb86f3d607"/>
+<approved hash="6,16,7c78cd84cbbf7a43"/>
+<approved hash="6,16,23010ff50ed12225"/>
+<approved hash="6,16,b2054c6b02f2727b"/>
+<approved hash="6,16,a5255b3357ada9bb"/>
+<approved hash="6,16,c4e1cd1dca07c3fb"/>
+<approved hash="6,16,3525fb33f7b339a5"/>
+<approved hash="6,16,74e73d1b3a0773fb"/>
+<approved hash="6,16,63b723d9bf81212e"/>
+<approved hash="6,16,9327cfd3cef39207"/>
+<approved hash="6,16,3519eb0fe7823994"/>
+<approved hash="6,16,873d17c916ed8619"/>
+<approved hash="6,16,fc781d841bbefa42"/>
+<approved hash="6,16,bb3c8fc88ee3ba17"/>
+<approved hash="6,16,3e36585bcac07273"/>
+<approved hash="6,16,f525eb33e7b4f9a2"/>
+<approved hash="6,16,7cef3d133a0c7bf0"/>
+<approved hash="6,16,b5205b3657a0b9b6"/>
+<approved hash="6,16,f4e05d1c5a1ff3e3"/>
+<approved hash="6,16,33aa4fc40f80752a"/>
+<approved hash="6,16,db394fcd4ee2da16"/>
+<approved hash="6,16,45237b3577b649a0"/>
+<approved hash="6,16,df38f7ccf6e3de17"/>
+<approved hash="6,16,6479cd85cbb46248"/>
+<approved hash="6,16,c33f4fcb4eebc21f"/>
+<approved hash="6,16,72c2bcabaa313284"/>
+<approved hash="6,16,05252b3327420954"/>
+<approved hash="6,16,3c1fcde3caff3b03"/>
+<approved hash="6,16,85202b3627b289a4"/>
+<approved hash="6,16,bce04d1c4a0ebbf2"/>
+<approved hash="6,16,33a72bc93f83f13e"/>
+<approved hash="6,16,c33ccfc8cee3c217"/>
+<approved hash="6,16,4525fb33f7bc49aa"/>
+<approved hash="6,16,df2777d376f3de07"/>
+<approved hash="6,16,647f4d834bbc6240"/>
+<approved hash="6,16,db3ecfcaceedda19"/>
+<approved hash="6,16,f63f7053b2ca327d"/>
+<approved hash="6,16,3529db3fd7b039a6"/>
+<approved hash="6,16,f4e1dd1dda05f3f9"/>
+<approved hash="6,16,2f4c76e921528e5a"/>
+</errors>
 </board>
 </drawing>
 <compatibility>
